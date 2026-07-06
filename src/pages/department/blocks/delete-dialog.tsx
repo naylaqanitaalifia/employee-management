@@ -8,10 +8,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PiWarning } from "react-icons/pi";
-import type { Department } from "../page";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
+import type { Department } from "./columns";
 
 interface Props {
   open: boolean;
@@ -70,11 +70,17 @@ export function DeleteDialog({ open, onOpenChange, department }: Props) {
               type="button"
               variant="outline"
               className="w-20"
+              disabled={remove.isPending}
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button variant="destructive" className="w-30" onClick={onSubmit} disabled={remove.isPending}>
+            <Button
+              variant="destructive"
+              className="w-30"
+              onClick={onSubmit}
+              disabled={remove.isPending}
+            >
               {remove.isPending ? "Deleting..." : "Yes, delete it"}
             </Button>
           </div>

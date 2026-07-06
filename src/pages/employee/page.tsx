@@ -9,11 +9,15 @@ import { DeleteDialog } from "./blocks/delete-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
+import type { Employee } from "@/hooks/use-employees";
 
 export function Page() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null,
+  );
 
   const {
     data: employees = [],
@@ -78,7 +82,6 @@ export function Page() {
               </tr>
             </thead>
 
-            {/* Table Body */}
             <tbody className="divide-y divide-muted-foreground/20 text-foreground">
               {employees === 0 ? (
                 <tr>
@@ -138,28 +141,26 @@ export function Page() {
                       )}
                     </td>
                     <td className="px-6 py-4 flex items-center gap-1 text-muted-foreground">
-                      <button className="p-2 text-muted-foreground cursor-pointer hover:bg-muted-foreground/10 rounded-md">
-                        <PiPencil
-                          size={18}
-                          onClick={() => setEditDialogOpen(true)}
-                        />
-                        <EditDialog
-                          open={editDialogOpen}
-                          onOpenChange={setEditDialogOpen}
-                        />
-                      </button>
-                      <button className="p-2 text-red-500 cursor-pointer hover:bg-red-500/10 rounded-md">
-                        <PiTrash
-                          size={18}
-                          onClick={() => setDeleteDialogOpen(true)}
-                        />
-                        <DeleteDialog
-                          open={deleteDialogOpen}
-                          onOpenChange={setDeleteDialogOpen}
-                        />
-                      </button>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedEmployee(employee);
+                          setEditDialogOpen(true);
+                        }}
+                      >
+                        <PiPencil size={18} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
+                        onClick={() => {
+                          setSelectedEmployee(employee);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        <PiTrash size={18} />
+                      </Button>
                     </td>
-                    {/* Salary Aligned Right untuk kerapian data angka */}
                     {/* <td className="px-6 py-4 text-right font-medium text-foreground tabular-nums">
                     {employee.salary}
                   </td> */}
@@ -168,6 +169,20 @@ export function Page() {
               )}
             </tbody>
           </table>
+
+          {/* EDIT DIALOG */}
+          <EditDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            employee={selectedEmployee}
+          />
+
+          {/* DELETE DIALOG */}
+          <DeleteDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            employee={selectedEmployee}
+          />
         </div>
       </div>
     </div>

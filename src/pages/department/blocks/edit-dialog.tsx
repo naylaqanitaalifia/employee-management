@@ -19,11 +19,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import type { Department } from "../page";
 import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
+import type { Department } from "./columns";
 
 interface Props {
   open: boolean;

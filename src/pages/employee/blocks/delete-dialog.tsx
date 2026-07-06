@@ -7,14 +7,42 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { apiConfig } from "@/config/api.config";
+import type { Employee } from "@/hooks/use-employees";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { PiWarning } from "react-icons/pi";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  employee: Employee | null;
 }
 
-export function DeleteDialog({ open, onOpenChange }: Props) {
+export function DeleteDialog({ open, onOpenChange, employee }: Props) {
+  const queryClient = useQueryClient();
+
+  const remove = useMutation({
+    mutationFn: async () => {
+      const { data } = await axios.delete(
+        `${apiConfig.API_URL}/employees/${employee?.id}`,
+      );
+
+      return data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
+
+      onOpenChange(false);
+    },
+  });
+
+  const onSubmit = () => {
+    remove.mutate();
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -40,11 +68,17 @@ export function DeleteDialog({ open, onOpenChange }: Props) {
             <Button
               variant="outline"
               className="w-20"
+              disabled={remove.isPending}
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button variant="destructive" className="w-30">
+            <Button
+              variant="destructive"
+              className="w-30"
+              onClick={onSubmit}
+              disabled={remove.isPending}
+            >
               Yes, delete it
             </Button>
           </div>

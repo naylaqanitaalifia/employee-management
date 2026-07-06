@@ -111,7 +111,6 @@ export function Page() {
                     <td className="px-6 py-3 flex items-center justify-center gap-1 text-muted-foreground">
                       <Button
                         variant="ghost"
-                        // className="p-2 text-muted-foreground cursor-pointer hover:bg-muted-foreground/10 rounded-md"
                         onClick={() => {
                           setSelectedPosition(position);
                           setEditDialogOpen(true);

@@ -9,11 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { Spinner } from "@/components/ui/spinner";
-
-export interface Department {
-  id: string;
-  name: string;
-}
+import { DataTable } from "../../components/ui/data-table";
+import { getColumns, type Department } from "./blocks/columns";
 
 export function Page() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -34,6 +31,18 @@ export function Page() {
       return data.data;
     },
   });
+
+  const handleEdit = (department: Department) => {
+    setSelectedDepartment(department);
+    setEditDialogOpen(true);
+  };
+
+  const handleDelete = (department: Department) => {
+    setSelectedDepartment(department);
+    setDeleteDialogOpen(true);
+  };
+
+  const columns = getColumns(handleEdit, handleDelete);
 
   if (isLoading) {
     return <Spinner></Spinner>;
@@ -71,10 +80,25 @@ export function Page() {
         <AddDialog open={isSheetOpen} onOpenChange={setIsSheetOpen} />
       </div>
 
+      <DataTable columns={columns} data={departments} />
+
+      {/* EDIT DIALOG */}
+      <EditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        department={selectedDepartment}
+      />
+
+      {/* DELETE DIALOG */}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        department={selectedDepartment}
+      />
+
       <div className="rounded-xl border border-muted-foreground/20 overflow-hidden">
         <div className="w-full overflow-x-auto">
           <table className="w-full text-sm text-left border-collapse">
-            {/* Table Header */}
             <thead className="bg-muted/40 border-b border-muted-foreground/20 text-muted-foreground font-medium text-xs uppercase tracking-wider select-none">
               <tr>
                 <th className="px-6 py-3.5 font-semibold">Name</th>
@@ -84,7 +108,6 @@ export function Page() {
               </tr>
             </thead>
 
-            {/* Table Body */}
             <tbody className="divide-y divide-muted-foreground/20 text-foreground">
               {departments.length === 0 ? (
                 <tr>
@@ -131,20 +154,6 @@ export function Page() {
               )}
             </tbody>
           </table>
-
-          {/* EDIT DIALOG */}
-          <EditDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            department={selectedDepartment}
-          />
-
-          {/* DELETE DIALOG */}
-          <DeleteDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            department={selectedDepartment}
-          />
         </div>
       </div>
     </div>
