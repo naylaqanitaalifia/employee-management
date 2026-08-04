@@ -16,6 +16,7 @@ export interface Employee {
   status: string;
   account_number: string;
   address: string;
+  created_at: string;
 }
 
 export function useEmployees() {

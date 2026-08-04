@@ -8,16 +8,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export type Department = {
+export type Position = {
   id: string;
   name: string;
   created_at: string;
 };
 
 export const getColumns = (
-  onEdit: (department: Department) => void,
-  onDelete: (department: Department) => void,
-): ColumnDef<Department>[] => [
+  onEdit: (position: Position) => void,
+  onDelete: (position: Position) => void,
+): ColumnDef<Position>[] => [
   {
     accessorKey: "created_at",
     header: "Created",
@@ -33,6 +33,10 @@ export const getColumns = (
     },
   },
   {
+    accessorKey: "department.name",
+    header: "Department Name",
+  },
+  {
     accessorKey: "name",
     header: "Name",
   },
@@ -41,12 +45,12 @@ export const getColumns = (
     header: () => <div className="text-center">Actions</div>,
     size: 150,
     cell: ({ row }) => {
-      const department = row.original;
+      const position = row.original;
       return (
         <div className="flex items-center justify-center">
           <Tooltip>
             <TooltipTrigger>
-              <Button variant="ghost" onClick={() => onEdit(department)}>
+              <Button variant="ghost" onClick={() => onEdit(position)}>
                 <PiPencil size={18} />
               </Button>
             </TooltipTrigger>
@@ -57,7 +61,7 @@ export const getColumns = (
               <Button
                 variant="ghost"
                 className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
-                onClick={() => onDelete(department)}
+                onClick={() => onDelete(position)}
               >
                 <PiTrash size={18} />
               </Button>

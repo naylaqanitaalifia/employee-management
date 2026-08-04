@@ -13,7 +13,7 @@ export function useDepartments() {
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/departments`);
 
-      return data.data;
+      return data.data.list;
     },
     staleTime: 1000 * 60 * 5,
   });

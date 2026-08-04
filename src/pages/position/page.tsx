@@ -1,7 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { PiPencil, PiPlusBold, PiTrash } from "react-icons/pi";
 import { AddDialog } from "./blocks/add-dialog";
 import { EditDialog } from "./blocks/edit-dialog";
 import { DeleteDialog } from "./blocks/delete-dialog";
@@ -9,35 +6,64 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { Spinner } from "@/components/ui/spinner";
+import { DataTable } from "@/components/ui/data-table";
+import { ListToolbar } from "./blocks/list-toolbar";
+import { useDebounce } from "use-debounce";
+import { getColumns } from "./blocks/columns";
 
 export interface Position {
   id: string;
   name: string;
+  created_at: string;
   department: {
     id: string;
     name: string;
+    created_at: string;
   };
 }
 
 export function Page() {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null,
   );
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
 
   const {
     data: positions = [],
     isLoading,
     isError,
   } = useQuery<Position[]>({
-    queryKey: ["positions"],
+    queryKey: ["positions", debouncedSearch],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/positions`);
+      const { data } = await axios.get(`${apiConfig.API_URL}/positions`, {
+        params: {
+          search: debouncedSearch,
+        },
+      });
       return data.data;
     },
+    placeholderData: (prev) => prev,
   });
+
+  const handleReset = () => {
+    setSearch("");
+  };
+
+  const handleEdit = (position: Position) => {
+    setSelectedPosition(position);
+    setEditDialogOpen(true);
+  };
+
+  const handleDelete = (position: Position) => {
+    setSelectedPosition(position);
+    setDeleteDialogOpen(true);
+  };
+
+  const columns = getColumns(handleEdit, handleDelete);
 
   if (isLoading) {
     return <Spinner></Spinner>;
@@ -48,8 +74,7 @@ export function Page() {
   }
 
   return (
-    <div className="p-4 space-y-6 bg-background min-h-screen">
-      {/* Header Halaman */}
+    <div className="p-4 space-y-6 bg-background h-full">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">
           Positions
@@ -59,97 +84,34 @@ export function Page() {
         </p>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="">
-          <Input type="text" placeholder="Search..." />
-        </div>
-        <Button
-          variant="default"
-          type="button"
-          onClick={() => setIsSheetOpen(true)}
-        >
-          <PiPlusBold />
-          Add Position
-        </Button>
+      <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
-        <AddDialog open={isSheetOpen} onOpenChange={setIsSheetOpen} />
-      </div>
-
-      <div className="rounded-xl border border-muted-foreground/20 overflow-hidden">
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-sm text-left border-collapse">
-            {/* Table Header */}
-            <thead className="bg-muted/40 border-b border-muted-foreground/20 text-muted-foreground font-medium text-xs uppercase tracking-wider select-none">
-              <tr>
-                <th className="px-6 py-3.5 font-semibold">Name</th>
-                <th className="px-6 py-3.5 font-semibold text-center">
-                  Action
-                </th>
-              </tr>
-            </thead>
-
-            {/* Table Body */}
-            <tbody className="divide-y divide-muted-foreground/20 text-foreground">
-              {positions.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={2}
-                    className="px-6 py-4 text-center text-muted-foreground"
-                  >
-                    No positions found.
-                  </td>
-                </tr>
-              ) : (
-                positions.map((position) => (
-                  <tr
-                    key={position.id}
-                    className="hover:bg-muted/40 transition-colors duration-150 group"
-                  >
-                    <td className="px-6 py-3 text-muted-foreground group-hover:text-foreground">
-                      {position.name}
-                    </td>
-                    <td className="px-6 py-3 flex items-center justify-center gap-1 text-muted-foreground">
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          setSelectedPosition(position);
-                          setEditDialogOpen(true);
-                        }}
-                      >
-                        <PiPencil size={18} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
-                        onClick={() => {
-                          setSelectedPosition(position);
-                          setDeleteDialogOpen(true);
-                        }}
-                      >
-                        <PiTrash size={18} />
-                      </Button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-
-          {/* EDIT DIALOG */}
-          <EditDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            position={selectedPosition}
+      <DataTable
+        columns={columns}
+        data={positions}
+        renderToolbar={() => (
+          <ListToolbar
+            search={search}
+            onSearchChange={setSearch}
+            onReset={handleReset}
+            onAdd={() => setAddDialogOpen(true)}
           />
+        )}
+      />
 
-          {/* DELETE DIALOG */}
-          <DeleteDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            position={selectedPosition}
-          />
-        </div>
-      </div>
+      {/* EDIT DIALOG */}
+      <EditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        position={selectedPosition}
+      />
+
+      {/* DELETE DIALOG */}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        position={selectedPosition}
+      />
     </div>
   );
 }
