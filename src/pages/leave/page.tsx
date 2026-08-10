@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { AddDialog } from "./blocks/add-dialog";
-import { ApproveDialog } from "./blocks/approve-dialog";
-import { RejectDialog } from "./blocks/reject-dialog";
+import { ListToolbar, DetailDialog, RejectDialog } from "./";
 import { DataTable } from "@/components/ui/data-table";
-import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { getColumns, type Leave } from "./blocks/columns";
 import { Spinner } from "@/components/ui/spinner";
@@ -36,6 +33,7 @@ export function Page() {
 
   const handleReject = (leave: Leave) => {
     setSelectedLeave(leave);
+    setDetailDialogOpen(false);
     setRejectDialogOpen(true);
   };
 
@@ -60,7 +58,7 @@ export function Page() {
         </p>
       </div>
 
-      <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+      {/* <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} /> */}
 
       <DataTable
         columns={columns}
@@ -75,19 +73,20 @@ export function Page() {
         )}
       />
 
-      {/* EDIT DIALOG */}
-      {/* <EditDialog
-        open={editDialogOpen}
+      {/* DETAIL DIALOG */}
+      <DetailDialog
+        open={detailDialogOpen}
         onOpenChange={setDetailDialogOpen}
         leave={selectedLeave}
-      /> */}
+        onReject={handleReject}
+      />
 
       {/* APPROVE DIALOG */}
-      <ApproveDialog
+      {/* <ApproveDialog
         open={approveDialogOpen}
         onOpenChange={setApproveDialogOpen}
         leave={selectedLeave}
-      />
+      /> */}
 
       {/* REJECT DIALOG */}
       <RejectDialog

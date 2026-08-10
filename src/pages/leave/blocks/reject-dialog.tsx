@@ -19,11 +19,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Leave } from "./columns";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -32,33 +33,36 @@ interface Props {
 }
 
 const formSchema = z.object({
-  reason: z.string().trim().min(1, { message: "Reason is required." }),
+  rejection_reason: z
+    .string()
+    .trim()
+    .min(1, { message: "Rejection reason is required." }),
 });
 
 type SchemaType = z.infer<typeof formSchema>;
 
-export function RejectDialog({ open, onOpenChange }: Props) {
+export function RejectDialog({ open, onOpenChange, leave }: Props) {
   const queryClient = useQueryClient();
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      reason: "",
+      rejection_reason: "",
     },
   });
 
   useEffect(() => {
     if (!open) {
       form.reset({
-        reason: "",
+        rejection_reason: "",
       });
     }
   }, [open]);
 
-  const create = useMutation({
+  const reject = useMutation({
     mutationFn: async (values: any) => {
-      const { data } = await axios.post(
-        `${apiConfig.API_URL}/employees`,
+      const { data } = await axios.patch(
+        `${apiConfig.API_URL}/leaves/${leave?.id}/reject`,
         values,
       );
       return data;
@@ -66,15 +70,17 @@ export function RejectDialog({ open, onOpenChange }: Props) {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["employees"],
+        queryKey: ["leaves"],
       });
+
+      toast.success("Leave rejected successfully");
 
       onOpenChange(false);
     },
   });
 
   const onSubmit = (values: SchemaType) => {
-    create.mutate({
+    reject.mutate({
       ...values,
     });
   };
@@ -95,13 +101,13 @@ export function RejectDialog({ open, onOpenChange }: Props) {
               {/* Reason */}
               <FormField
                 control={form.control}
-                name="reason"
+                name="rejection_reason"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Reason</FormLabel>
+                    <FormLabel>Rejection Reason</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter reason"
+                        placeholder="Enter reject reason"
                         rows={4}
                         {...field}
                       />
@@ -116,18 +122,18 @@ export function RejectDialog({ open, onOpenChange }: Props) {
                   type="button"
                   variant="outline"
                   className="w-20"
-                  disabled={create.isPending}
+                  disabled={reject.isPending}
                   onClick={() => onOpenChange(false)}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  variant="destructive"
+                  variant="primary"
                   className="w-30"
-                  disabled={create.isPending}
+                  disabled={reject.isPending}
                 >
-                  {create.isPending ? "Reject..." : "Reject"}
+                  {reject.isPending ? "Loading..." : "Save"}
                 </Button>
               </div>
             </form>

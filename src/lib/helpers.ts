@@ -66,24 +66,24 @@ export function getInitials(
   name: string | null | undefined,
   count?: number,
 ): string {
-  if (!name || typeof name !== 'string') {
-    return '';
+  if (!name || typeof name !== "string") {
+    return "";
   }
 
   const initials = name
-    .split(' ')
+    .split(" ")
     .filter(Boolean)
     .map((part) => part[0].toUpperCase());
 
   return count && count > 0
-    ? initials.slice(0, count).join('')
-    : initials.join('');
+    ? initials.slice(0, count).join("")
+    : initials.join("");
 }
 
 export function toAbsoluteUrl(pathname: string): string {
   const baseUrl = import.meta.env.BASE_URL;
 
-  if (baseUrl && baseUrl !== '/') {
+  if (baseUrl && baseUrl !== "/") {
     return import.meta.env.BASE_URL + pathname;
   } else {
     return pathname;
@@ -92,43 +92,77 @@ export function toAbsoluteUrl(pathname: string): string {
 
 export function timeAgo(date: Date | string): string {
   const now = new Date();
-  const inputDate = typeof date === 'string' ? new Date(date) : date;
+  const inputDate = typeof date === "string" ? new Date(date) : date;
   const diff = Math.floor((now.getTime() - inputDate.getTime()) / 1000);
 
-  if (diff < 60) return 'just now';
+  if (diff < 60) return "just now";
   if (diff < 3600)
-    return `${Math.floor(diff / 60)} minute${Math.floor(diff / 60) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 60)} minute${Math.floor(diff / 60) > 1 ? "s" : ""} ago`;
   if (diff < 86400)
-    return `${Math.floor(diff / 3600)} hour${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 3600)} hour${Math.floor(diff / 3600) > 1 ? "s" : ""} ago`;
   if (diff < 604800)
-    return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? "s" : ""} ago`;
   if (diff < 2592000)
-    return `${Math.floor(diff / 604800)} week${Math.floor(diff / 604800) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 604800)} week${Math.floor(diff / 604800) > 1 ? "s" : ""} ago`;
   if (diff < 31536000)
-    return `${Math.floor(diff / 2592000)} month${Math.floor(diff / 2592000) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 2592000)} month${Math.floor(diff / 2592000) > 1 ? "s" : ""} ago`;
 
-  return `${Math.floor(diff / 31536000)} year${Math.floor(diff / 31536000) > 1 ? 's' : ''} ago`;
+  return `${Math.floor(diff / 31536000)} year${Math.floor(diff / 31536000) > 1 ? "s" : ""} ago`;
 }
 
 export function formatDate(input: Date | string | number): string {
   const date = new Date(input);
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
   });
 }
 
 export function formatDateTime(input: Date | string | number): string {
   const date = new Date(input);
-  return date.toLocaleString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+  return date.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
     hour12: true,
   });
+}
+
+export function formatDateRange(startDateStr: string, endDateStr: string): string {
+  const start = new Date(startDateStr);
+  const end = new Date(endDateStr);
+
+  // Jika tanggal sama (cuti 1 hari)
+  if (startDateStr === endDateStr) {
+    return start.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  const startDay = start.getDate();
+  const endDay = end.getDate();
+  const startMonth = start.toLocaleDateString("id-ID", { month: "short" });
+  const endMonth = end.toLocaleDateString("id-ID", { month: "short" });
+  const startYear = start.getFullYear();
+  const endYear = end.getFullYear();
+
+  // 1. Bulan & Tahun Sama -> "10 – 12 Agu 2026"
+  if (startMonth === endMonth && startYear === endYear) {
+    return `${startDay} – ${endDay} ${startMonth} ${startYear}`;
+  }
+
+  // 2. Beda Bulan, Tahun Sama -> "28 Agu – 02 Sep 2026"
+  if (startYear === endYear) {
+    return `${startDay} ${startMonth} – ${endDay} ${endMonth} ${startYear}`;
+  }
+
+  // 3. Beda Tahun -> "28 Des 2026 – 03 Jan 2027"
+  return `${startDay} ${startMonth} ${startYear} – ${endDay} ${endMonth} ${endYear}`;
 }
 
 export function deepMerge(obj1: any, obj2: any): any {
@@ -136,7 +170,7 @@ export function deepMerge(obj1: any, obj2: any): any {
 
   for (const key in obj2) {
     if (Object.prototype.hasOwnProperty.call(obj2, key)) {
-      if (typeof obj2[key] === 'object' && obj2[key] !== null && obj1[key]) {
+      if (typeof obj2[key] === "object" && obj2[key] !== null && obj1[key]) {
         output[key] = deepMerge(obj1[key], obj2[key]);
       } else {
         output[key] = obj2[key];
@@ -149,8 +183,8 @@ export function deepMerge(obj1: any, obj2: any): any {
 
 // base64 -> Blob
 export function base64ToFile(base64: string, filename: string) {
-  const arr = base64.split(',');
-  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+  const arr = base64.split(",");
+  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
   const bstr = atob(arr[1]);
   let n = bstr.length;
   const u8arr = new Uint8Array(n);
@@ -163,8 +197,8 @@ export function base64ToFile(base64: string, filename: string) {
 }
 
 interface FormatNumberOptions {
-  locale?: 'id-ID' | 'en-US';
-  currency?: 'IDR' | 'USD' | null;
+  locale?: "id-ID" | "en-US";
+  currency?: "IDR" | "USD" | null;
   decimal?: number;
   fallback?: string;
 }
@@ -174,13 +208,13 @@ export function formatNumber(
   options: FormatNumberOptions = {},
 ): string {
   const {
-    locale = 'id-ID',
+    locale = "id-ID",
     currency = null,
     decimal = 0,
-    fallback = '-',
+    fallback = "-",
   } = options;
 
-  if (value === null || value === undefined || value === '') return fallback;
+  if (value === null || value === undefined || value === "") return fallback;
 
   const num = Number(value);
   if (isNaN(num)) return fallback;
@@ -188,21 +222,32 @@ export function formatNumber(
   return new Intl.NumberFormat(locale, {
     minimumFractionDigits: decimal,
     maximumFractionDigits: decimal,
-    ...(currency ? { style: 'currency', currency } : {}),
+    ...(currency ? { style: "currency", currency } : {}),
   }).format(num);
 }
 
 export const formatRupiah = (v: string | number | null | undefined) =>
-  formatNumber(v, { currency: 'IDR' });
+  formatNumber(v, { currency: "IDR" });
 
 export const formatThousand = (v: string | number | null | undefined) =>
   formatNumber(v);
 
-export function buildFileDownloadUrl(fileName: string): string {
-  const params = new URLSearchParams({ name: fileName });
-  const auth = getAuth();
-  if (auth?.access_token) {
-    params.set('token', auth.access_token);
-  }
-  return `${apiConfig.service_master_data}/download?${params.toString()}`;
+// export function buildFileDownloadUrl(fileName: string): string {
+//   const params = new URLSearchParams({ name: fileName });
+//   const auth = getAuth();
+//   if (auth?.access_token) {
+//     params.set('token', auth.access_token);
+//   }
+//   return `${apiConfig.service_master_data}/download?${params.toString()}`;
+// }
+
+// CAPITALIZE
+export function capitalize(text: string): string {
+  if (!text) return "";
+
+  return text
+    .replace(/[_-]/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

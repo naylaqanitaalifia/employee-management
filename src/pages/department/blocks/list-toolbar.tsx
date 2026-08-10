@@ -39,7 +39,7 @@ const ListToolbar = ({
         </Tooltip>
       </div>
 
-      <Button variant="default" type="button" onClick={onAdd}>
+      <Button variant="primary" type="button" onClick={onAdd}>
         <PiPlusBold />
         Add Department
       </Button>

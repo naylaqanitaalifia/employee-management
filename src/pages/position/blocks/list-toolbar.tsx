@@ -38,7 +38,7 @@ const ListToolbar = ({
           <TooltipContent>Reset Filter</TooltipContent>
         </Tooltip>
       </div>
-      <Button variant="default" type="button" onClick={onAdd}>
+      <Button variant="primary" type="button" onClick={onAdd}>
         <PiPlusBold />
         Add Position
       </Button>

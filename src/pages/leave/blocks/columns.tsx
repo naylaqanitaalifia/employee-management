@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Ban, Check, Eye } from "lucide-react";
+import { capitalize, formatDate } from "@/lib/helpers";
 
 export type Leave = {
   id: string;
@@ -59,26 +60,14 @@ export const getColumns = (
     accessorKey: "start_date",
     header: "Start Date",
     cell: ({ row }) => {
-      return (
-        <div className="flex flex-col">
-          {row.original.start_date
-            ? format(new Date(row.original.start_date), "MMM dd, yyyy")
-            : "-"}
-        </div>
-      );
+      return formatDate(row.original.start_date);
     },
   },
   {
     accessorKey: "end_date",
     header: "End Date",
     cell: ({ row }) => {
-      return (
-        <div className="flex flex-col">
-          {row.original.end_date
-            ? format(new Date(row.original.end_date), "MMM dd, yyyy")
-            : "-"}
-        </div>
-      );
+      return formatDate(row.original.end_date);
     },
   },
   {
@@ -88,6 +77,9 @@ export const getColumns = (
   {
     accessorKey: "created_at",
     header: "Applied At",
+    cell: ({ row }) => {
+      return formatDate(row.original.created_at);
+    },
   },
   {
     accessorKey: "status",
@@ -114,7 +106,7 @@ export const getColumns = (
           appearance="light"
           className="rounded-full"
         >
-          {status}
+          {capitalize(status ?? "-")}
         </Badge>
       );
     },
@@ -135,7 +127,7 @@ export const getColumns = (
             </TooltipTrigger>
             <TooltipContent>Detail</TooltipContent>
           </Tooltip>
-          <Tooltip>
+          {/* <Tooltip>
             <TooltipTrigger>
               <Button
                 variant="ghost"
@@ -158,7 +150,7 @@ export const getColumns = (
               </Button>
             </TooltipTrigger>
             <TooltipContent>Reject</TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
         </div>
       );
     },

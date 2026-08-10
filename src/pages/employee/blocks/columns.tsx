@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { capitalize } from "@/lib/helpers";
 
 export type Employee = {
   id: string;
@@ -85,7 +86,7 @@ export const getColumns = (
           appearance="light"
           className="rounded-full"
         >
-          {status}
+          {capitalize(status ?? "-")}
         </Badge>
       );
     },

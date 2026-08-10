@@ -56,7 +56,7 @@ export function Page() {
   const columns = getColumns(handleEdit, handleDelete);
 
   if (isLoading) {
-    <Spinner />;
+    return <Spinner />;
   }
 
   if (isError) {
