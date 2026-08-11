@@ -546,7 +546,7 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={update.isPending}
                 >

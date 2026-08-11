@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Ban, Check, Eye } from "lucide-react";
 import { capitalize, formatDate } from "@/lib/helpers";
+import { PiPencil, PiTrash } from "react-icons/pi";
 
 export type Leave = {
   id: string;
@@ -30,8 +31,9 @@ export type Leave = {
 
 export const getColumns = (
   onDetail: (leave: Leave) => void,
-  onApprove: (leave: Leave) => void,
+  onEdit: (leave: Leave) => void,
   onReject: (leave: Leave) => void,
+  onDelete: (leave: Leave) => void,
 ): ColumnDef<Leave>[] => [
   // {
   //   accessorKey: "created_at",
@@ -120,37 +122,37 @@ export const getColumns = (
       return (
         <div className="flex items-center justify-center">
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button variant="ghost" onClick={() => onDetail(leave)}>
                 <Eye />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Detail</TooltipContent>
           </Tooltip>
-          {/* <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant="ghost"
-                className="text-success cursor-pointer hover:bg-success/10 hover:text-success rounded-md"
-                onClick={() => onApprove(leave)}
-              >
-                <Check />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Approve</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant="ghost"
-                className="text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive rounded-md"
-                onClick={() => onReject(leave)}
-              >
-                <Ban />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Reject</TooltipContent>
-          </Tooltip> */}
+          {leave.status === "pending" && (
+            <>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" onClick={() => onEdit(leave)}>
+                    <PiPencil size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
+                    onClick={() => onDelete(leave)}
+                  >
+                    <PiTrash size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete</TooltipContent>
+              </Tooltip>
+            </>
+          )}
         </div>
       );
     },

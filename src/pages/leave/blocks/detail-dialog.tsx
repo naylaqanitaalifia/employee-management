@@ -68,11 +68,6 @@ export function DetailDialog({ open, onOpenChange, leave, onReject }: Props) {
 
       const { data } = await axios.get(
         `${apiConfig.API_URL}/leaves/${leave?.id}`,
-        // {
-        //   params: {
-        //     search,
-        //   },
-        // },
       );
       return data.data;
     },

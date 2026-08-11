@@ -49,7 +49,7 @@ export const getColumns = (
       return (
         <div className="flex items-center justify-center">
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button variant="ghost" onClick={() => onEdit(position)}>
                 <PiPencil size={18} />
               </Button>
@@ -57,7 +57,7 @@ export const getColumns = (
             <TooltipContent>Edit</TooltipContent>
           </Tooltip>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { ListToolbar, DetailDialog, RejectDialog } from "./";
+import {
+  ListToolbar,
+  AddDialog,
+  DetailDialog,
+  EditDialog,
+  DeleteDialog,
+} from "./";
 import { DataTable } from "@/components/ui/data-table";
 import { useDebounce } from "use-debounce";
 import { getColumns, type Leave } from "./blocks/columns";
@@ -9,8 +15,9 @@ import { useLeaves } from "@/hooks/use-leaves";
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-  const [approveDialogOpen, setApproveDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<Leave | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
@@ -26,9 +33,9 @@ export function Page() {
     setDetailDialogOpen(true);
   };
 
-  const handleApprove = (leave: Leave) => {
+  const handleEdit = (leave: Leave) => {
     setSelectedLeave(leave);
-    setApproveDialogOpen(true);
+    setEditDialogOpen(true);
   };
 
   const handleReject = (leave: Leave) => {
@@ -37,7 +44,17 @@ export function Page() {
     setRejectDialogOpen(true);
   };
 
-  const columns = getColumns(handleDetail, handleApprove, handleReject);
+  const handleDelete = (leave: Leave) => {
+    setSelectedLeave(leave);
+    setDeleteDialogOpen(true);
+  };
+
+  const columns = getColumns(
+    handleDetail,
+    handleEdit,
+    handleReject,
+    handleDelete
+  );
 
   if (isLoading) {
     return <Spinner />;
@@ -58,7 +75,7 @@ export function Page() {
         </p>
       </div>
 
-      {/* <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} /> */}
+      <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
       <DataTable
         columns={columns}
@@ -81,17 +98,17 @@ export function Page() {
         onReject={handleReject}
       />
 
-      {/* APPROVE DIALOG */}
-      {/* <ApproveDialog
-        open={approveDialogOpen}
-        onOpenChange={setApproveDialogOpen}
+      {/* EDIT DIALOG */}
+      <EditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
         leave={selectedLeave}
-      /> */}
+      />
 
-      {/* REJECT DIALOG */}
-      <RejectDialog
-        open={rejectDialogOpen}
-        onOpenChange={setRejectDialogOpen}
+      {/* DELETE DIALOG */}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
         leave={selectedLeave}
       />
     </div>

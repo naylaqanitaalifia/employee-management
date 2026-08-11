@@ -30,7 +30,7 @@ const ListToolbar = ({
           className="max-w-sm"
         />
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button variant="outline" size="icon" onClick={onReset}>
               <PiArrowsClockwise />
             </Button>
@@ -38,10 +38,10 @@ const ListToolbar = ({
           <TooltipContent>Reset Filter</TooltipContent>
         </Tooltip>
       </div>
-      {/* <Button variant="default" type="button" onClick={onAdd}>
+      <Button variant="primary" type="button" onClick={onAdd}>
         <PiPlusBold />
-        Add Employee
-      </Button> */}
+        Add Leave
+      </Button>
     </div>
   );
 };

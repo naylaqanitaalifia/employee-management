@@ -30,7 +30,7 @@ const ListToolbar = ({
           className="max-w-sm"
         />
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button variant="outline" size="icon" onClick={onReset}>
               <PiArrowsClockwise />
             </Button>
