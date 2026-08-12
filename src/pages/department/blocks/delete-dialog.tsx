@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
 import type { Department } from "./columns";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -35,6 +36,8 @@ export function DeleteDialog({ open, onOpenChange, department }: Props) {
       queryClient.invalidateQueries({
         queryKey: ["departments"],
       });
+
+      toast.success("Department deleted successfully");
 
       onOpenChange(false);
     },

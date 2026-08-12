@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Eye } from "lucide-react";
+import { Banknote, BanknoteArrowUp, Eye } from "lucide-react";
 import { capitalize, formatRupiah } from "@/lib/helpers";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import type { Payroll } from "@/hooks/use-payrolls";
@@ -15,7 +15,8 @@ import { format } from "date-fns";
 export const getColumns = (
   onDetail: (payroll: Payroll) => void,
   onEdit: (payroll: Payroll) => void,
-  onReject: (payroll: Payroll) => void,
+  onProcess: (payroll: Payroll) => void,
+  onPay: (payroll: Payroll) => void,
   onDelete: (payroll: Payroll) => void,
 ): ColumnDef<Payroll>[] => [
   // {
@@ -86,11 +87,13 @@ export const getColumns = (
       const status = row.original.status;
       const getStatusVariant = (status: string) => {
         switch (status) {
-          case "approved":
+          case "paid":
             return "success";
+          case "processed":
+            return "info";
           case "draft":
             return "warning";
-          case "rejected":
+          case "cancel":
             return "destructive";
           case "cancelled":
             return "secondary";
@@ -127,6 +130,7 @@ export const getColumns = (
           </Tooltip> */}
           {payroll.status === "draft" && (
             <>
+              {/* EDIT */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="ghost" onClick={() => onEdit(payroll)}>
@@ -135,6 +139,18 @@ export const getColumns = (
                 </TooltipTrigger>
                 <TooltipContent>Edit</TooltipContent>
               </Tooltip>
+
+              {/* PROCESS */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" onClick={() => onProcess(payroll)}>
+                    <BanknoteArrowUp size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Process</TooltipContent>
+              </Tooltip>
+
+              {/* DELETE */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -147,7 +163,18 @@ export const getColumns = (
                 </TooltipTrigger>
                 <TooltipContent>Delete</TooltipContent>
               </Tooltip>
+
             </>
+          )}
+          {payroll?.status === "processed" && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" onClick={() => onPay(payroll)}>
+                  <Banknote size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Mark as Paid</TooltipContent>
+            </Tooltip>
           )}
         </div>
       );

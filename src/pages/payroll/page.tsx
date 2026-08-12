@@ -2,8 +2,8 @@ import { useState } from "react";
 import {
   ListToolbar,
   AddDialog,
-  DetailDialog,
   EditDialog,
+  ProcessDialog,
   DeleteDialog,
 } from ".";
 import { DataTable } from "@/components/ui/data-table";
@@ -16,11 +16,16 @@ export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [processDialogOpen, setProcessDialogOpen] = useState(false);
   const [selectedPayroll, setSelectedPayroll] = useState<Payroll | null>(null);
+
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
+
+  const [processAction, setProcessAction] = useState<"process" | "pay">(
+    "process",
+  );
 
   const {
     data: payrolls = [],
@@ -42,10 +47,16 @@ export function Page() {
     setEditDialogOpen(true);
   };
 
-  const handleReject = (payroll: Payroll) => {
+  const handleProcess = (payroll: Payroll) => {
     setSelectedPayroll(payroll);
-    setDetailDialogOpen(false);
-    setRejectDialogOpen(true);
+    setProcessAction("process");
+    setProcessDialogOpen(true);
+  };
+
+  const handlePay = (payroll: Payroll) => {
+    setSelectedPayroll(payroll);
+    setProcessAction("pay");
+    setProcessDialogOpen(true);
   };
 
   const handleDelete = (payroll: Payroll) => {
@@ -56,7 +67,8 @@ export function Page() {
   const columns = getColumns(
     handleDetail,
     handleEdit,
-    handleReject,
+    handleProcess,
+    handlePay,
     handleDelete,
   );
 
@@ -94,19 +106,19 @@ export function Page() {
         )}
       />
 
-      {/* DETAIL DIALOG */}
-      {/* <DetailDialog
-        open={detailDialogOpen}
-        onOpenChange={setDetailDialogOpen}
-        payroll={selectedPayroll}
-        onReject={handleReject}
-      /> */}
-
       {/* EDIT DIALOG */}
       <EditDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
         payroll={selectedPayroll}
+      />
+
+      {/* PROCESS DIALOG */}
+      <ProcessDialog
+        open={processDialogOpen}
+        onOpenChange={setProcessDialogOpen}
+        payroll={selectedPayroll}
+        action={processAction}
       />
 
       {/* DELETE DIALOG */}

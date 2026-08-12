@@ -12,6 +12,7 @@ import type { Position } from "../page";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -35,6 +36,8 @@ export function DeleteDialog({ open, onOpenChange, position }: Props) {
       queryClient.invalidateQueries({
         queryKey: ["positions"],
       });
+
+      toast.success("Position deleted successfully");
 
       onOpenChange(false);
     },

@@ -31,6 +31,7 @@ import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { useDepartments } from "@/hooks/use-departments";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -76,6 +77,8 @@ export function AddDialog({ open, onOpenChange }: Props) {
       await queryClient.invalidateQueries({
         queryKey: ["positions"],
       });
+
+      toast.success("Position created successfully");
 
       onOpenChange(false);
     },

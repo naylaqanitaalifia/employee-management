@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
     <div>
       {renderToolbar?.(table)}
       <div className="overflow-x-auto rounded-lg border">
-        <Table>
+        <Table className="min-w-max">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

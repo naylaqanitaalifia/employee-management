@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/command";
 import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -76,14 +77,11 @@ const formSchema = z.object({
     .min(1, { message: "Contract type is required." }),
   start_date: z.date({ message: "Start date is required." }),
   status: z.string().trim().min(1, { message: "Status is required." }),
-  account_number: z
-    .string()
-    .trim()
-    .optional(),
-    // .transform((val) => (val === "" ? undefined : val))
-    // .refine((val) => !val || /^\d+$/.test(val), {
-    //   message: "Account number must contain only digits.",
-    // }),
+  account_number: z.string().trim().optional(),
+  // .transform((val) => (val === "" ? undefined : val))
+  // .refine((val) => !val || /^\d+$/.test(val), {
+  //   message: "Account number must contain only digits.",
+  // }),
   address: z.string().trim().min(1, { message: "Address is required." }),
 });
 
@@ -154,6 +152,8 @@ export function AddDialog({ open, onOpenChange }: Props) {
       await queryClient.invalidateQueries({
         queryKey: ["employees"],
       });
+
+      toast.success("Employee created successfully");
 
       onOpenChange(false);
     },
@@ -543,7 +543,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={create.isPending}
                 >

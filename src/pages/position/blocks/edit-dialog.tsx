@@ -32,6 +32,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
 import { useDepartments } from "@/hooks/use-departments";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -83,6 +84,8 @@ export function EditDialog({ open, onOpenChange, position }: Props) {
       await queryClient.invalidateQueries({
         queryKey: ["positions"],
       });
+
+      toast.success("Position updated successfully");
 
       onOpenChange(false);
     },
@@ -164,11 +167,11 @@ export function EditDialog({ open, onOpenChange, position }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={update.isPending}
                 >
-                  {update.isPending ? "Saving..." : "Save"}
+                  {update.isPending ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </form>

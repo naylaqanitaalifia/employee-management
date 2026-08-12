@@ -222,6 +222,7 @@ export function EditDialog({ open, onOpenChange, payroll }: Props) {
                   </FormItem>
                 )}
               />
+              
               {/* Period Month */}
               <FormField
                 control={form.control}

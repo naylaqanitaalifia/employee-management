@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -65,6 +66,8 @@ export function AddDialog({ open, onOpenChange }: Props) {
       await queryClient.invalidateQueries({
         queryKey: ["departments"],
       });
+
+      toast.success("Department created successfully");
 
       onOpenChange(false);
     },
@@ -114,7 +117,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={create.isPending}
                 >
