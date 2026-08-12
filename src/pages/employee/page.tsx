@@ -70,7 +70,7 @@ export function Page() {
           Employee
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage your organization members and their roles.
+          Manage employee information and organizational assignments.
         </p>
       </div>
 
