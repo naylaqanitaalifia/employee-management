@@ -543,7 +543,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={create.isPending}
                 >

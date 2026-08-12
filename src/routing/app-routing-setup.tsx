@@ -6,6 +6,7 @@ import { Layout as PositionPage } from "@/pages/position";
 import { Layout as EmployeePage } from "@/pages/employee";
 import { Layout as AttendancePage } from "@/pages/attendance";
 import { Layout as LeavePage } from "@/pages/leave";
+import { Layout as PayrollPage } from "@/pages/payroll";
 
 export function AppRoutingSetup() {
   return (
@@ -17,6 +18,7 @@ export function AppRoutingSetup() {
         <Route path="employee" element={<EmployeePage />} />
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="leave" element={<LeavePage />} />
+        <Route path="payroll" element={<PayrollPage />} />
       </Route>
     </Routes>
   );

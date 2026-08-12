@@ -153,7 +153,7 @@ export function DataTable<TData, TValue>({
             <Button
               variant={
                 page === table.getState().pagination.pageIndex
-                  ? "default"
+                  ? "primary"
                   : "ghost"
               }
               size="sm"

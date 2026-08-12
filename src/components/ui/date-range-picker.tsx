@@ -10,6 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { PiCalendarDots } from "react-icons/pi";
 
 interface DateRangePickerProps {
   value?: DateRange;
@@ -34,9 +35,8 @@ export function DateRangePicker({
           type="button"
           variant="outline"
           disabled={disabled}
-          className="justify-start px-2.5 font-normal"
+          className="justify-between px-2.5 font-normal"
         >
-          <CalendarIcon data-icon="inline-start" />
           {value?.from ? (
             value.to ? (
               <>
@@ -49,6 +49,7 @@ export function DateRangePicker({
           ) : (
             <span>Pick a date</span>
           )}
+          <PiCalendarDots className="size-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
