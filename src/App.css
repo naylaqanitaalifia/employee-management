@@ -65,6 +65,9 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-foreground: var(--info-foreground);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
   --color-warning-foreground: var(--warning-foreground);
@@ -110,6 +113,9 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: var(--color-zinc-50);
   --muted-foreground: var(--color-zinc-500);
+  --info: var(--color-blue-600);
+  --info-soft: var(--color-blue-100);
+  --info-foreground: var(--color-white);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --warning: var(--color-yellow-600);

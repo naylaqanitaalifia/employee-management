@@ -1,24 +1,28 @@
 import { MainLayout } from "@/layouts/layout";
 import { Route, Routes } from "react-router";
-import { Layout as DashboardPage } from "@/pages/dashboard";
-import { Layout as DepartmentPage } from "@/pages/department";
-import { Layout as PositionPage } from "@/pages/position";
-import { Layout as EmployeePage } from "@/pages/employee";
-import { Layout as AttendancePage } from "@/pages/attendance";
-import { Layout as LeavePage } from "@/pages/leave";
-import { Layout as PayrollPage } from "@/pages/payroll";
+import { lazyLayout, SuspenseOutlet } from "@/routing/routing-helpers";
+
+const DashboardPage = lazyLayout(() => import("@/pages/dashboard"));
+const DepartmentPage = lazyLayout(() => import("@/pages/department"));
+const PositionPage = lazyLayout(() => import("@/pages/position"));
+const EmployeePage = lazyLayout(() => import("@/pages/employee"));
+const AttendancePage = lazyLayout(() => import("@/pages/attendance"));
+const LeavePage = lazyLayout(() => import("@/pages/leave"));
+const PayrollPage = lazyLayout(() => import("@/pages/payroll"));
 
 export function AppRoutingSetup() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="department" element={<DepartmentPage />} />
-        <Route path="position" element={<PositionPage />} />
-        <Route path="employee" element={<EmployeePage />} />
-        <Route path="attendance" element={<AttendancePage />} />
-        <Route path="leave" element={<LeavePage />} />
-        <Route path="payroll" element={<PayrollPage />} />
+        <Route element={<SuspenseOutlet />}>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="department" element={<DepartmentPage />} />
+          <Route path="position" element={<PositionPage />} />
+          <Route path="employee" element={<EmployeePage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="leave" element={<LeavePage />} />
+          <Route path="payroll" element={<PayrollPage />} />
+        </Route>
       </Route>
     </Routes>
   );

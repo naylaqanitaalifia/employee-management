@@ -260,16 +260,20 @@ export function AddDialog({ open, onOpenChange }: Props) {
                           </Button>
                         </PopoverTrigger>
 
-                        <PopoverContent className="p-0 w-[320px]" align="start">
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
                           <Command>
                             <CommandInput placeholder="Search..." />
-                            <CommandList>
+                            <CommandList className="max-h-60 overflow-y-auto w-full">
                               <CommandEmpty>No department found.</CommandEmpty>
                               <CommandGroup>
                                 {departments.map((department) => (
                                   <CommandItem
                                     key={department.id}
-                                    value={department.id}
+                                    value={department.name}
                                     onSelect={() => {
                                       field.onChange(department.id);
                                       form.setValue("position_id", "");
@@ -319,16 +323,21 @@ export function AddDialog({ open, onOpenChange }: Props) {
                           </Button>
                         </PopoverTrigger>
 
-                        <PopoverContent className="p-0 w-[320px]" align="start">
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
                           <Command>
                             <CommandInput placeholder="Search..." />
-                            <CommandList>
+                            <CommandList className="max-h-60 overflow-y-auto w-full">
+                              <CommandEmpty>No position found.</CommandEmpty>
                               <CommandGroup>
                                 {filteredPositions.length > 0 ? (
                                   filteredPositions.map((position) => (
                                     <CommandItem
                                       key={position.id}
-                                      value={position.id}
+                                      value={position.name}
                                       onSelect={() => {
                                         field.onChange(position.id);
                                         setPositionPopoverOpen(false);
@@ -382,10 +391,14 @@ export function AddDialog({ open, onOpenChange }: Props) {
                           </Button>
                         </PopoverTrigger>
 
-                        <PopoverContent className="p-0 w-[320px]" align="start">
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
                           <Command>
                             <CommandInput placeholder="Search..." />
-                            <CommandList>
+                            <CommandList className="max-h-60 overflow-y-auto w-full">
                               <CommandEmpty>
                                 No contract type found.
                               </CommandEmpty>
@@ -459,10 +472,14 @@ export function AddDialog({ open, onOpenChange }: Props) {
                           </Button>
                         </PopoverTrigger>
 
-                        <PopoverContent className="p-0 w-[320px]" align="start">
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
                           <Command>
                             <CommandInput placeholder="Search..." />
-                            <CommandList>
+                            <CommandList className="max-h-60 overflow-y-auto w-full">
                               <CommandEmpty>No status found.</CommandEmpty>
                               <CommandGroup>
                                 {STATUSES.map((status) => (

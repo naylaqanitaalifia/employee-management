@@ -85,7 +85,7 @@ export const getColumns = (
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => <div className="text-center">Status</div>,
     cell: ({ row }) => {
       const status = row.original.status;
       const getStatusVariant = (status: string) => {
@@ -103,13 +103,15 @@ export const getColumns = (
         }
       };
       return (
-        <Badge
-          variant={getStatusVariant(row.original.status ?? "") as any}
-          appearance="light"
-          className="rounded-full"
-        >
-          {capitalize(status ?? "-")}
-        </Badge>
+        <div className="flex justify-center">
+          <Badge
+            variant={getStatusVariant(row.original.status ?? "") as any}
+            appearance="light"
+            className="rounded-full"
+          >
+            {capitalize(status ?? "-")}
+          </Badge>
+        </div>
       );
     },
   },

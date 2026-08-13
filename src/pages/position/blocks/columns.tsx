@@ -19,6 +19,14 @@ export const getColumns = (
   onDelete: (position: Position) => void,
 ): ColumnDef<Position>[] => [
   {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "department.name",
+    header: "Department Name",
+  },
+  {
     accessorKey: "created_at",
     header: "Created",
     size: 100,
@@ -31,14 +39,6 @@ export const getColumns = (
         </div>
       );
     },
-  },
-  {
-    accessorKey: "department.name",
-    header: "Department Name",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
   },
   {
     id: "actions",

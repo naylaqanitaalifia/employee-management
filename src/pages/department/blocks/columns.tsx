@@ -19,8 +19,12 @@ export const getColumns = (
   onDelete: (department: Department) => void,
 ): ColumnDef<Department>[] => [
   {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
     accessorKey: "created_at",
-    header: "Created",
+    header: "Created At",
     size: 100,
     cell: ({ row }) => {
       return (
@@ -31,10 +35,6 @@ export const getColumns = (
         </div>
       );
     },
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
   },
   {
     id: "actions",

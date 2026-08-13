@@ -7,8 +7,10 @@ import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
+import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
+  const [isLoading, setIsLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -62,13 +64,9 @@ export function Page() {
 
   const columns = getColumns(handleEdit, handleDelete);
 
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
-
-  // if (isError) {
-  //   return <div className="">Failed to load departments.</div>;
-  // }
+  if (isLoading) {
+    return <ContentLoader />;
+  }
 
   return (
     <div className="p-4 space-y-6 bg-background h-full">

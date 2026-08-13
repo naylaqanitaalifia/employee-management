@@ -10,6 +10,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
+import { ContentLoader } from "@/components/common/content-loader";
 
 export interface Position {
   id: string;
@@ -66,11 +67,7 @@ export function Page() {
   const columns = getColumns(handleEdit, handleDelete);
 
   if (isLoading) {
-    return <Spinner></Spinner>;
-  }
-
-  if (isError) {
-    return <div className="">Failed to load positions.</div>;
+    return <ContentLoader />;
   }
 
   return (

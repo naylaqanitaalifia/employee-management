@@ -30,22 +30,8 @@ export const getColumns = (
   onDelete: (department: Employee) => void,
 ): ColumnDef<Employee>[] => [
   {
-    accessorKey: "created_at",
-    header: "Created",
-    size: 100,
-    cell: ({ row }) => {
-      return (
-        <div className="flex flex-col">
-          {row.original.created_at
-            ? format(new Date(row.original.created_at), "MMM dd, yyyy")
-            : "-"}
-        </div>
-      );
-    },
-  },
-  {
     accessorKey: "name",
-    header: "Fullname",
+    header: "Full Name",
   },
   {
     accessorKey: "email",
@@ -65,7 +51,7 @@ export const getColumns = (
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => <div className="text-center">Status</div>,
     cell: ({ row }) => {
       const status = row.original.status;
       const getStatusVariant = (status: string) => {
@@ -81,13 +67,29 @@ export const getColumns = (
         }
       };
       return (
-        <Badge
-          variant={getStatusVariant(row.original.status ?? "") as any}
-          appearance="light"
-          className="rounded-full"
-        >
-          {capitalize(status ?? "-")}
-        </Badge>
+        <div className="flex justify-center">
+          <Badge
+            variant={getStatusVariant(row.original.status ?? "") as any}
+            appearance="light"
+            className="rounded-full"
+          >
+            {capitalize(status ?? "-")}
+          </Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: "Created",
+    size: 100,
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-col">
+          {row.original.created_at
+            ? format(new Date(row.original.created_at), "MMM dd, yyyy")
+            : "-"}
+        </div>
       );
     },
   },

@@ -10,6 +10,7 @@ import { DataTable } from "../../components/ui/data-table";
 import { getColumns, type Department } from "./blocks/columns";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
+import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -55,7 +56,7 @@ export function Page() {
   const columns = getColumns(handleEdit, handleDelete);
 
   if (isLoading) {
-    return <Spinner />;
+    return <ContentLoader />;
   }
 
   if (isError) {

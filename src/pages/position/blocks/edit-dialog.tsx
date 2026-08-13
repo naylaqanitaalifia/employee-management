@@ -19,15 +19,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronDownIcon } from "lucide-react";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import type { Position } from "../page";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
@@ -50,6 +57,8 @@ type SchemaType = z.infer<typeof formSchema>;
 export function EditDialog({ open, onOpenChange, position }: Props) {
   const queryClient = useQueryClient();
   const { data: departments = [] } = useDepartments();
+
+  const [departmentPopoverOpen, setDepartmentPopoverOpen] = useState(false);
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),
@@ -108,7 +117,7 @@ export function EditDialog({ open, onOpenChange, position }: Props) {
         <DialogBody className="scrollable-y overflow-scroll">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Name */}
+              {/* NAME */}
               <FormField
                 control={form.control}
                 name="name"
@@ -123,7 +132,7 @@ export function EditDialog({ open, onOpenChange, position }: Props) {
                 )}
               />
 
-              {/* Department */}
+              {/* DEPARTMENTS */}
               <FormField
                 control={form.control}
                 name="department_id"
@@ -131,24 +140,53 @@ export function EditDialog({ open, onOpenChange, position }: Props) {
                   <FormItem>
                     <FormLabel>Department</FormLabel>
                     <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                      <Popover
+                        open={departmentPopoverOpen}
+                        onOpenChange={setDepartmentPopoverOpen}
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select department" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {departments.map((department) => (
-                            <SelectItem
-                              key={department.id}
-                              value={department.id}
-                            >
-                              {department.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        <PopoverTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full justify-between"
+                            placeholder={!field.value}
+                          >
+                            {field.value
+                              ? departments.find(
+                                  (department) => department.id === field.value,
+                                )?.name
+                              : "Select department"}
+                            <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
+                          </Button>
+                        </PopoverTrigger>
+
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
+                          <Command>
+                            <CommandInput placeholder="Search..." />
+                            <CommandList className="max-h-60 overflow-y-auto w-full">
+                              <CommandEmpty>No department found.</CommandEmpty>
+                              <CommandGroup>
+                                {departments.map((department) => (
+                                  <CommandItem
+                                    key={department.id}
+                                    value={department.name}
+                                    onSelect={() => {
+                                      field.onChange(department.id);
+                                      setDepartmentPopoverOpen(false);
+                                    }}
+                                  >
+                                    {department.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

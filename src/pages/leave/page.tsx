@@ -11,6 +11,7 @@ import { useDebounce } from "use-debounce";
 import { getColumns, type Leave } from "./blocks/columns";
 import { Spinner } from "@/components/ui/spinner";
 import { useLeaves } from "@/hooks/use-leaves";
+import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -53,15 +54,11 @@ export function Page() {
     handleDetail,
     handleEdit,
     handleReject,
-    handleDelete
+    handleDelete,
   );
 
   if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return <div className="">Failed to load leaves.</div>;
+    return <ContentLoader />;
   }
 
   return (
