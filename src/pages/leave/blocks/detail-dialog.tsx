@@ -98,6 +98,15 @@ export function DetailDialog({ open, onOpenChange, leave, onReject }: Props) {
 
       onOpenChange(false);
     },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    },
   });
 
   const handleApprove = () => {

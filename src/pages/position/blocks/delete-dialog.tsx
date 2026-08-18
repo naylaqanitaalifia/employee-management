@@ -41,6 +41,15 @@ export function DeleteDialog({ open, onOpenChange, position }: Props) {
 
       onOpenChange(false);
     },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    },
   });
 
   const onSubmit = () => {
@@ -77,7 +86,12 @@ export function DeleteDialog({ open, onOpenChange, position }: Props) {
             >
               Cancel
             </Button>
-            <Button variant="destructive" className="w-30" onClick={onSubmit} disabled={remove.isPending}>
+            <Button
+              variant="destructive"
+              className="w-30"
+              onClick={onSubmit}
+              disabled={remove.isPending}
+            >
               {remove.isPending ? "Deleting..." : "Yes, delete it"}
             </Button>
           </div>

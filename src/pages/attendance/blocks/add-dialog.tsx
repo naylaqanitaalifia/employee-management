@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/command";
 import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -154,6 +155,8 @@ export function AddDialog({ open, onOpenChange }: Props) {
       await queryClient.invalidateQueries({
         queryKey: ["employees"],
       });
+
+      toast.success("Employee created successfully");
 
       onOpenChange(false);
     },

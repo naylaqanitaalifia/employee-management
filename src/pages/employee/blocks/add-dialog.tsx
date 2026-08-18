@@ -157,6 +157,15 @@ export function AddDialog({ open, onOpenChange }: Props) {
 
       onOpenChange(false);
     },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    },
   });
 
   const onSubmit = (values: SchemaType) => {
@@ -333,24 +342,24 @@ export function AddDialog({ open, onOpenChange }: Props) {
                             <CommandList className="max-h-60 overflow-y-auto w-full">
                               <CommandEmpty>No position found.</CommandEmpty>
                               <CommandGroup>
-                                {filteredPositions.length > 0 ? (
-                                  filteredPositions.map((position) => (
-                                    <CommandItem
-                                      key={position.id}
-                                      value={position.name}
-                                      onSelect={() => {
-                                        field.onChange(position.id);
-                                        setPositionPopoverOpen(false);
-                                      }}
-                                    >
-                                      {position.name}
-                                    </CommandItem>
-                                  ))
+                                {filteredPositions.map((position) => (
+                                  <CommandItem
+                                    key={position.id}
+                                    value={position.name}
+                                    onSelect={() => {
+                                      field.onChange(position.id);
+                                      setPositionPopoverOpen(false);
+                                    }}
+                                  >
+                                    {position.name}
+                                  </CommandItem>
+                                ))}
+                                {/* {filteredPositions.length > 0 ? (
                                 ) : (
                                   <CommandEmpty>
                                     No positions found in this department.
                                   </CommandEmpty>
-                                )}
+                                )} */}
                               </CommandGroup>
                             </CommandList>
                           </Command>

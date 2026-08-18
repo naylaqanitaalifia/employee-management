@@ -43,6 +43,7 @@ import { useDepartments } from "@/hooks/use-departments";
 import { usePositions } from "@/hooks/use-positions";
 import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -157,7 +158,18 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
         queryKey: ["employees"],
       });
 
+      toast.success("Employee updated successfully");
+
       onOpenChange(false);
+    },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 
@@ -335,24 +347,24 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
                             <CommandList>
                               <CommandEmpty>No position found.</CommandEmpty>
                               <CommandGroup>
-                                {filteredPositions.length > 0 ? (
-                                  filteredPositions.map((position) => (
-                                    <CommandItem
-                                      key={position.id}
-                                      value={position.name}
-                                      onSelect={() => {
-                                        field.onChange(position.id);
-                                        setPositionPopoverOpen(false);
-                                      }}
-                                    >
-                                      {position.name}
-                                    </CommandItem>
-                                  ))
+                                {filteredPositions.map((position) => (
+                                  <CommandItem
+                                    key={position.id}
+                                    value={position.name}
+                                    onSelect={() => {
+                                      field.onChange(position.id);
+                                      setPositionPopoverOpen(false);
+                                    }}
+                                  >
+                                    {position.name}
+                                  </CommandItem>
+                                ))}
+                                {/* {filteredPositions.length > 0 ? (
                                 ) : (
                                   <CommandEmpty>
                                     No positions found in this department.
                                   </CommandEmpty>
-                                )}
+                                )} */}
                               </CommandGroup>
                             </CommandList>
                           </Command>

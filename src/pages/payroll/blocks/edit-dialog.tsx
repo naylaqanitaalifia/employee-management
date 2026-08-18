@@ -114,7 +114,9 @@ export function EditDialog({ open, onOpenChange, payroll }: Props) {
     if (open && payrollDetail) {
       form.reset({
         employee_id: payrollDetail.employee?.id,
-        period_month: payrollDetail.period_month ? new Date(payrollDetail.period_month) : undefined,
+        period_month: payrollDetail.period_month
+          ? new Date(payrollDetail.period_month)
+          : undefined,
         basic_salary: payrollDetail.basic_salary,
         allowance: payrollDetail.allowance,
         overtime_pay: payrollDetail.overtime_pay,
@@ -142,6 +144,15 @@ export function EditDialog({ open, onOpenChange, payroll }: Props) {
       toast.success("Payroll updated successfully");
 
       onOpenChange(false);
+    },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 
@@ -222,7 +233,7 @@ export function EditDialog({ open, onOpenChange, payroll }: Props) {
                   </FormItem>
                 )}
               />
-              
+
               {/* Period Month */}
               <FormField
                 control={form.control}

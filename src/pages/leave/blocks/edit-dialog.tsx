@@ -145,6 +145,15 @@ export function EditDialog({ open, onOpenChange, leave }: Props) {
 
       onOpenChange(false);
     },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    },
   });
 
   const onSubmit = (values: SchemaType) => {

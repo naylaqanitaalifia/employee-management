@@ -12,6 +12,7 @@ import type { Employee } from "@/hooks/use-employees";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { PiWarning } from "react-icons/pi";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -36,7 +37,18 @@ export function DeleteDialog({ open, onOpenChange, employee }: Props) {
         queryKey: ["employees"],
       });
 
+      toast.success("Leave approved successfully");
+
       onOpenChange(false);
+    },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 
