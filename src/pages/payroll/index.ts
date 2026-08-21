@@ -4,6 +4,7 @@ export * from "./blocks/detail-dialog";
 export * from "./blocks/edit-dialog";
 export * from "./blocks/process-dialog";
 export * from "./blocks/delete-dialog";
+export * from "./blocks/card";
 export * from "./page";
 export * from "./layout";
 export * from "./context/context";

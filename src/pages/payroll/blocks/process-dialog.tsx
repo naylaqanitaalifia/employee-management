@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogBody, DialogContent } from "@/components/ui/dialog";
 import { apiConfig } from "@/config/api.config";
 import type { Payroll } from "@/hooks/use-payrolls";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +14,8 @@ interface Props {
   action: "process" | "pay";
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function ProcessDialog({ open, onOpenChange, payroll, action }: Props) {
   const queryClient = useQueryClient();
 
@@ -33,7 +28,7 @@ export function ProcessDialog({ open, onOpenChange, payroll, action }: Props) {
       const status = isPaying ? "paid" : "processed";
 
       const { data } = await axios.patch(
-        `${apiConfig.API_URL}/payrolls/${payroll?.id}/status`,
+        `${baseUrl}/payrolls/${payroll?.id}/status`,
         {
           status,
         },

@@ -13,6 +13,7 @@ import type { Payroll } from "@/hooks/use-payrolls";
 import { format } from "date-fns";
 
 export const getColumns = (
+  isAdmin: boolean,
   onDetail: (payroll: Payroll) => void,
   onEdit: (payroll: Payroll) => void,
   onProcess: (payroll: Payroll) => void,
@@ -33,11 +34,15 @@ export const getColumns = (
   //     );
   //   },
   // },
-  {
-    accessorFn: (row) => row.employee?.name || "-",
-    id: "employee_name",
-    header: "Employee",
-  },
+  ...(isAdmin
+    ? [
+        {
+          accessorFn: (row) => row.employee?.name || "-",
+          id: "employee_name",
+          header: "Employee",
+        },
+      ]
+    : []),
   {
     accessorKey: "period_month",
     header: "Period Month",
@@ -114,15 +119,17 @@ export const getColumns = (
       );
     },
   },
-  {
-    id: "actions",
-    header: () => <div className="text-center">Actions</div>,
-    size: 150,
-    cell: ({ row }) => {
-      const payroll = row.original;
-      return (
-        <div className="flex items-center justify-center">
-          {/* <Tooltip>
+  ...(isAdmin
+    ? [
+        {
+          id: "actions",
+          header: () => <div className="text-center">Actions</div>,
+          size: 150,
+          cell: ({ row }) => {
+            const payroll = row.original;
+            return (
+              <div className="flex items-center justify-center">
+                {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" onClick={() => onDetail(payroll)}>
                 <Eye />
@@ -130,55 +137,60 @@ export const getColumns = (
             </TooltipTrigger>
             <TooltipContent>Detail</TooltipContent>
           </Tooltip> */}
-          {payroll.status === "draft" && (
-            <>
-              {/* EDIT */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" onClick={() => onEdit(payroll)}>
-                    <PiPencil size={18} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Edit</TooltipContent>
-              </Tooltip>
+                {payroll.status === "draft" && (
+                  <>
+                    {/* EDIT */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" onClick={() => onEdit(payroll)}>
+                          <PiPencil size={18} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Edit</TooltipContent>
+                    </Tooltip>
 
-              {/* PROCESS */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" onClick={() => onProcess(payroll)}>
-                    <BanknoteArrowUp size={18} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Process</TooltipContent>
-              </Tooltip>
+                    {/* PROCESS */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          onClick={() => onProcess(payroll)}
+                        >
+                          <BanknoteArrowUp size={18} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Process</TooltipContent>
+                    </Tooltip>
 
-              {/* DELETE */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
-                    onClick={() => onDelete(payroll)}
-                  >
-                    <PiTrash size={18} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Delete</TooltipContent>
-              </Tooltip>
-            </>
-          )}
-          {payroll?.status === "processed" && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" onClick={() => onPay(payroll)}>
-                  <Banknote size={18} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Mark as Paid</TooltipContent>
-            </Tooltip>
-          )}
-        </div>
-      );
-    },
-  },
+                    {/* DELETE */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
+                          onClick={() => onDelete(payroll)}
+                        >
+                          <PiTrash size={18} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Delete</TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
+                {payroll?.status === "processed" && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" onClick={() => onPay(payroll)}>
+                        <Banknote size={18} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Mark as Paid</TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+            );
+          },
+        },
+      ]
+    : []),
 ];

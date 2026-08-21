@@ -41,22 +41,13 @@ import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
 import { useEmployees } from "@/hooks/use-employees";
 import { toast } from "sonner";
+import { useAuth } from "@/auth/auth-context";
+import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const LEAVES_TYPE = [
-  { name: "Cuti Tahunan", id: "annual" },
-  { name: "Cuti Sakit", id: "sick" },
-  { name: "Cuti Tanpa Gaji", id: "unpaid" },
-  { name: "Cuti Melahirkan", id: "maternity" },
-  { name: "Cuti Ayah", id: "paternity" },
-  { name: "Cuti Pernikahan", id: "marriage" },
-  { name: "Cuti Duka", id: "bereavement" },
-  { name: "Cuti Khusus", id: "special" },
-];
 
 const formSchema = z.object({
   employee_id: z.string().trim().min(1, { message: "Employee is required." }),
@@ -79,8 +70,9 @@ type LeavePayload = {
 };
 
 export function AddDialog({ open, onOpenChange }: Props) {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { data: employees = [] } = useEmployees();
+  // console.log(user);
 
   const [employeePopoverOpen, setEmployeePopoverOpen] = useState(false);
   const [typePopoverOpen, setTypePopoverOpen] = useState(false);
@@ -88,7 +80,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employee_id: "",
+      employee_id: user?.employee_id,
       type: "",
       date: undefined,
       reason: "",
@@ -98,7 +90,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
   useEffect(() => {
     if (!open) {
       form.reset({
-        employee_id: "",
+        employee_id: user?.employee_id,
         type: "",
         date: undefined,
         reason: "",
@@ -154,7 +146,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {/* Employee */}
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="employee_id"
                 render={({ field }) => (
@@ -208,7 +200,8 @@ export function AddDialog({ open, onOpenChange }: Props) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
+
               {/* Type */}
               <FormField
                 control={form.control}
@@ -229,10 +222,9 @@ export function AddDialog({ open, onOpenChange }: Props) {
                             placeholder={!field.value}
                           >
                             {field.value
-                              ? LEAVES_TYPE.find(
-                                  (contract_type) =>
-                                    contract_type.id === field.value,
-                                )?.name
+                              ? LEAVE_TYPE_OPTIONS.find(
+                                  (leave_type) => leave_type.value === field.value,
+                                )?.label
                               : "Select type"}
                             <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
                           </Button>
@@ -244,16 +236,16 @@ export function AddDialog({ open, onOpenChange }: Props) {
                             <CommandList>
                               <CommandEmpty>No type found.</CommandEmpty>
                               <CommandGroup>
-                                {LEAVES_TYPE.map((contract_type) => (
+                                {LEAVE_TYPE_OPTIONS.map((leave_type) => (
                                   <CommandItem
-                                    key={contract_type.id}
-                                    value={contract_type.name}
+                                    key={leave_type.value}
+                                    value={leave_type.label}
                                     onSelect={() => {
-                                      field.onChange(contract_type.id);
+                                      field.onChange(leave_type.value);
                                       setTypePopoverOpen(false);
                                     }}
                                   >
-                                    {contract_type.name}
+                                    {leave_type.label}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>

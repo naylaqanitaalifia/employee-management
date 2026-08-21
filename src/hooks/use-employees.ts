@@ -19,11 +19,13 @@ export interface Employee {
   created_at: string;
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function useEmployees() {
   return useQuery<Employee[]>({
     queryKey: ["employees"],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/employees`);
+      const { data } = await axios.get(`${baseUrl}/employees`);
       return data.data;
     },
     staleTime: 1000 * 60 * 5,

@@ -7,11 +7,13 @@ export interface Department {
   name: string;
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function useDepartments() {
   return useQuery<Department[]>({
     queryKey: ["departments"],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/departments`, {
+      const { data } = await axios.get(`${baseUrl}/departments`, {
         params: {
           page: 1,
           limit: 100,

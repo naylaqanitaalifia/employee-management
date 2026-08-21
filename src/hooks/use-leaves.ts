@@ -20,11 +20,13 @@ export interface Leave {
   updated_at: string;
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function useLeaves(search?: string) {
   return useQuery<Leave[]>({
     queryKey: ["leaves", search],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/leaves`, {
+      const { data } = await axios.get(`${baseUrl}/leaves`, {
         params: {
           search,
         },

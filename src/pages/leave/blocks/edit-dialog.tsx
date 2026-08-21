@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/command";
 import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useEmployees } from "@/hooks/use-employees";
 import { toast } from "sonner";
 import type { Leave } from "@/hooks/use-leaves";
 

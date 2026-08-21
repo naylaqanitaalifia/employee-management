@@ -5,6 +5,7 @@ import {
   DetailDialog,
   EditDialog,
   DeleteDialog,
+  LeaveCards,
 } from "./";
 import { DataTable } from "@/components/ui/data-table";
 import { useDebounce } from "use-debounce";
@@ -12,18 +13,22 @@ import { getColumns, type Leave } from "./blocks/columns";
 import { Spinner } from "@/components/ui/spinner";
 import { useLeaves } from "@/hooks/use-leaves";
 import { ContentLoader } from "@/components/common/content-loader";
+import { useAuth } from "@/auth/auth-context";
 
 export function Page() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
+
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+  const { data: leaves = [], isLoading, isError } = useLeaves(debouncedSearch);
+
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<Leave | null>(null);
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
-
-  const { data: leaves = [], isLoading, isError } = useLeaves(debouncedSearch);
 
   const handleReset = () => {
     setSearch("");
@@ -51,6 +56,7 @@ export function Page() {
   };
 
   const columns = getColumns(
+    isAdmin,
     handleDetail,
     handleEdit,
     handleReject,
@@ -71,6 +77,8 @@ export function Page() {
           Manage employee leave requests, approvals, and leave records.
         </p>
       </div>
+
+      <LeaveCards />
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 

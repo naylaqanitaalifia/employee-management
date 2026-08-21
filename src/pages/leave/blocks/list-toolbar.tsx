@@ -1,3 +1,4 @@
+import { useAuth } from "@/auth/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,6 +21,9 @@ const ListToolbar = ({
   onReset,
   onAdd,
 }: ListToolbarProps) => {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
+  
   return (
     <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-1 items-center gap-2">
@@ -38,10 +42,12 @@ const ListToolbar = ({
           <TooltipContent>Reset Filter</TooltipContent>
         </Tooltip>
       </div>
-      <Button variant="primary" type="button" onClick={onAdd}>
-        <PiPlusBold />
-        Add Leave
-      </Button>
+      {!isAdmin && (
+        <Button variant="primary" type="button" onClick={onAdd}>
+          <PiPlusBold />
+          Add Leave
+        </Button>
+      )}
     </div>
   );
 };

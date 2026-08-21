@@ -1,8 +1,11 @@
 import Profile from "@/assets/images/profile.jpeg";
 import Logo from "@/assets/images/hero.png";
 import { PiCaretUpDown, PiSidebar } from "react-icons/pi";
+import { useAuth } from "@/auth/auth-context";
 
 export function SidebarHeader() {
+  const { user } = useAuth();
+
   return (
     <div className="px-4 pt-4 pb-2">
       <div className="flex items-center justify-between border-b border-muted-foreground/25 pb-4">
@@ -23,7 +26,7 @@ export function SidebarHeader() {
           </div>
           <div className="min-w-0">
             <h4 className="text-sm font-semibold tracking-tight truncate leading-tight">
-              Nayla Qanita Alifia
+              {user?.name || "-"}
             </h4>
             <span className="block text-[11px] text-muted-foreground truncate mt-0.5">
               nylqnt@gmail.com

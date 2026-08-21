@@ -23,11 +23,13 @@ export interface Payroll {
   updated_by: string;
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function usePayrolls(search?: string) {
   return useQuery<Payroll[]>({
     queryKey: ["payrolls", search],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/payrolls`, {
+      const { data } = await axios.get(`${baseUrl}/payrolls`, {
         params: {
           search,
         },

@@ -119,6 +119,16 @@ export function formatDate(input: Date | string | number): string {
   });
 }
 
+export function formatFullDate(input: Date | string | number): string {
+  const date = new Date(input);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export function formatDateTime(input: Date | string | number): string {
   const date = new Date(input);
   return date.toLocaleString("en-US", {
@@ -131,7 +141,10 @@ export function formatDateTime(input: Date | string | number): string {
   });
 }
 
-export function formatDateRange(startDateStr: string, endDateStr: string): string {
+export function formatDateRange(
+  startDateStr: string,
+  endDateStr: string,
+): string {
   const start = new Date(startDateStr);
   const end = new Date(endDateStr);
 
@@ -250,4 +263,13 @@ export function capitalize(text: string): string {
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+export function getLabel(value: string, options: Option[]): string {
+  return options.find((option) => option.value === value)?.label ?? value;
 }

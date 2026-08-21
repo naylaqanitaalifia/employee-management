@@ -5,6 +5,7 @@ import {
   EditDialog,
   ProcessDialog,
   DeleteDialog,
+  PayrollCard,
 } from ".";
 import { DataTable } from "@/components/ui/data-table";
 import { useDebounce } from "use-debounce";
@@ -12,17 +13,21 @@ import { getColumns } from "./blocks/columns";
 import { Spinner } from "@/components/ui/spinner";
 import { usePayrolls, type Payroll } from "@/hooks/use-payrolls";
 import { ContentLoader } from "@/components/common/content-loader";
+import { useAuth } from "@/auth/auth-context";
 
 export function Page() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
+
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
   const [selectedPayroll, setSelectedPayroll] = useState<Payroll | null>(null);
-
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
 
   const [processAction, setProcessAction] = useState<"process" | "pay">(
     "process",
@@ -66,6 +71,7 @@ export function Page() {
   };
 
   const columns = getColumns(
+    isAdmin,
     handleDetail,
     handleEdit,
     handleProcess,
@@ -84,9 +90,13 @@ export function Page() {
           Payroll Management
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage employee salaries, payroll records, and monthly payments.
+          {isAdmin
+            ? "Manage employee salaries, payroll records, and monthly payments."
+            : "View your salary information and monthly payroll history."}
         </p>
       </div>
+
+      <PayrollCard />
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 

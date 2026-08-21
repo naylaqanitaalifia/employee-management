@@ -12,6 +12,8 @@ import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { ContentLoader } from "@/components/common/content-loader";
 
+const baseUrl = apiConfig.API_URL;
+
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -28,7 +30,7 @@ export function Page() {
   } = useQuery<Department[]>({
     queryKey: ["departments", debouncedSearch],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/departments`, {
+      const { data } = await axios.get(`${baseUrl}/departments`, {
         params: {
           search: debouncedSearch,
         },

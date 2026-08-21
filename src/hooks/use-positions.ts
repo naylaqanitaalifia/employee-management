@@ -11,11 +11,13 @@ export interface Position {
   };
 }
 
+const baseUrl = apiConfig.API_URL;
+
 export function usePositions() {
   return useQuery<Position[]>({
     queryKey: ["positions"],
     queryFn: async () => {
-      const { data } = await axios.get(`${apiConfig.API_URL}/positions`);
+      const { data } = await axios.get(`${baseUrl}/positions`);
 
       return data.data;
     },

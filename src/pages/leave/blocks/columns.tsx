@@ -8,8 +8,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Ban, Check, Eye } from "lucide-react";
-import { capitalize, formatDate } from "@/lib/helpers";
+import { capitalize, formatDate, getLabel } from "@/lib/helpers";
 import { PiPencil, PiTrash } from "react-icons/pi";
+import { useAuth } from "@/auth/auth-context";
+import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
 
 export type Leave = {
   id: string;
@@ -30,6 +32,7 @@ export type Leave = {
 };
 
 export const getColumns = (
+  isAdmin: boolean,
   onDetail: (leave: Leave) => void,
   onEdit: (leave: Leave) => void,
   onReject: (leave: Leave) => void,
@@ -49,14 +52,21 @@ export const getColumns = (
   //     );
   //   },
   // },
-  {
-    accessorKey: "employee_name",
-    header: "Employee",
-    cell: ({ row }) => row.original.employee?.name ?? "-",
-  },
+  ...(isAdmin
+    ? [
+        {
+          accessorKey: "employee_name",
+          header: "Employee",
+          cell: ({ row }) => row.original.employee?.name ?? "-",
+        },
+      ]
+    : []),
   {
     accessorKey: "type",
     header: "Leave Type",
+    cell: ({ row }) => {
+      return getLabel(row.original.type, LEAVE_TYPE_OPTIONS);
+    },
   },
   {
     accessorKey: "start_date",
@@ -120,18 +130,24 @@ export const getColumns = (
     header: () => <div className="text-center">Actions</div>,
     size: 150,
     cell: ({ row }) => {
+      const { user } = useAuth();
+      console.log(user);
+      const isAdmin = user?.role === "ADMIN";
       const leave = row.original;
+
       return (
         <div className="flex items-center justify-center">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" onClick={() => onDetail(leave)}>
-                <Eye />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Detail</TooltipContent>
-          </Tooltip>
-          {leave.status === "pending" && (
+          {isAdmin && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" onClick={() => onDetail(leave)}>
+                  <Eye />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Detail</TooltipContent>
+            </Tooltip>
+          )}
+          {!isAdmin && leave.status === "pending" && (
             <>
               <Tooltip>
                 <TooltipTrigger asChild>

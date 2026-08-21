@@ -7,8 +7,12 @@ import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { AuthProvider } from "@/auth/auth-provider.tsx";
 import { BrowserRouter } from "react-router";
+import { setupAxios } from "@/lib/api.ts";
+import axios from "axios";
 
 const queryClient = new QueryClient();
+
+setupAxios(axios);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

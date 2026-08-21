@@ -75,6 +75,8 @@ type PayrollPayload = {
   deduction: string;
 };
 
+const baseUrl = apiConfig.API_URL;
+
 export function AddDialog({ open, onOpenChange }: Props) {
   const queryClient = useQueryClient();
   const { data: employees = [] } = useEmployees();
@@ -109,7 +111,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
   const create = useMutation({
     mutationFn: async (values: PayrollPayload) => {
       const { data } = await axios.post(
-        `${apiConfig.API_URL}/payrolls`,
+        `${baseUrl}/payrolls`,
         values,
       );
       return data;

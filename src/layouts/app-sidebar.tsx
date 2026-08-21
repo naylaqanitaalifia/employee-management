@@ -34,174 +34,182 @@ import {
   BanknoteArrowDown,
   PlaneTakeoff,
 } from "lucide-react";
-
-const data = {
-  user: {
-    name: "Nayla Qanita Alifia",
-    email: "naylaqanita286@gmail.com",
-    avatar: "/assets/images/profile.jpeg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: <LayoutDashboard />,
-      // isActive: true,
-    },
-    {
-      title: "Department",
-      url: "/department",
-      icon: <Building2 />,
-      // isActive: true,
-    },
-    {
-      title: "Position",
-      url: "/position",
-      icon: <IdCardLanyard />,
-      // isActive: true,
-    },
-    {
-      title: "Employee",
-      url: "/employee",
-      icon: <Users />,
-      // isActive: true,
-    },
-    {
-      title: "Attendance",
-      url: "/attendance",
-      icon: <CalendarCheck />,
-      // isActive: true,
-    },
-    {
-      title: "Leave",
-      url: "/leave",
-      icon: <PlaneTakeoff />,
-      // isActive: true,
-    },
-    {
-      title: "Payroll",
-      url: "/payroll",
-      icon: <BanknoteArrowDown />,
-      // isActive: true,
-    },
-    {
-      title: "Playground",
-      url: "#",
-      icon: <TerminalSquareIcon />,
-      // isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: <BotIcon />,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: <BookOpenIcon />,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: <Settings2Icon />,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: <LifeBuoyIcon />,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: <SendIcon />,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
-    },
-  ],
-};
+import { useAuth } from "@/auth/auth-context";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
+
+  const data = {
+    // user: {
+    //   name: "Nayla Qanita Alifia",
+    //   email: "naylaqanita286@gmail.com",
+    //   avatar: "/assets/images/profile.jpeg",
+    // },
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "/",
+        icon: <LayoutDashboard />,
+        // isActive: true,
+      },
+      ...(isAdmin
+        ? [
+            {
+              title: "Department",
+              url: "/department",
+              icon: <Building2 />,
+              // isActive: true,
+            },
+            {
+              title: "Position",
+              url: "/position",
+              icon: <IdCardLanyard />,
+              // isActive: true,
+            },
+            {
+              title: "Employee",
+              url: "/employee",
+              icon: <Users />,
+              // isActive: true,
+            },
+          ]
+        : []),
+      {
+        title: "Attendance",
+        url: "/attendance",
+        icon: <CalendarCheck />,
+        // isActive: true,
+      },
+      {
+        title: "Leave",
+        url: "/leave",
+        icon: <PlaneTakeoff />,
+        // isActive: true,
+      },
+      {
+        title: "Payroll",
+        url: "/payroll",
+        icon: <BanknoteArrowDown />,
+        // isActive: true,
+      },
+      {
+        title: "Playground",
+        url: "#",
+        icon: <TerminalSquareIcon />,
+        // isActive: true,
+        items: [
+          {
+            title: "History",
+            url: "#",
+          },
+          {
+            title: "Starred",
+            url: "#",
+          },
+          {
+            title: "Settings",
+            url: "#",
+          },
+        ],
+      },
+      // {
+      //   title: "Models",
+      //   url: "#",
+      //   icon: <BotIcon />,
+      //   items: [
+      //     {
+      //       title: "Genesis",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Explorer",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Quantum",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: "Documentation",
+      //   url: "#",
+      //   icon: <BookOpenIcon />,
+      //   items: [
+      //     {
+      //       title: "Introduction",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Get Started",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Tutorials",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Changelog",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: "Settings",
+      //   url: "#",
+      //   icon: <Settings2Icon />,
+      //   items: [
+      //     {
+      //       title: "General",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Team",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Billing",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Limits",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
+    ],
+    navSecondary: [
+      {
+        title: "Support",
+        url: "#",
+        icon: <LifeBuoyIcon />,
+      },
+      {
+        title: "Feedback",
+        url: "#",
+        icon: <SendIcon />,
+      },
+    ],
+    projects: [
+      {
+        name: "Design Engineering",
+        url: "#",
+        icon: <FrameIcon />,
+      },
+      {
+        name: "Sales & Marketing",
+        url: "#",
+        icon: <PieChartIcon />,
+      },
+      {
+        name: "Travel",
+        url: "#",
+        icon: <MapIcon />,
+      },
+    ],
+  };
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -227,7 +235,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
