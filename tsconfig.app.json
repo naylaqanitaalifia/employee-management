@@ -19,8 +19,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    // "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "noFallthroughCasesInSwitch": true,
+    // "baseUrl": ".",
 
     /* Path alias */
     "paths": {
