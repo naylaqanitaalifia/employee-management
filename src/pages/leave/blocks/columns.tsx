@@ -11,24 +11,25 @@ import { capitalize, formatDate, getLabel } from "@/lib/helpers";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import { useAuth } from "@/auth/auth-context";
 import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
+import type { Leave } from "@/hooks/use-leaves";
 
-export type Leave = {
-  id: string;
-  type: string;
-  employee: {
-    id: string;
-    name: string;
-  };
-  days: number;
-  start_date: string;
-  end_date: string;
-  reason: string;
-  status: string;
-  approved_by: string | null;
-  approved_at: string | null;
-  created_at: string;
-  updated_at: string;
-};
+// export type Leave = {
+//   id: string;
+//   type: string;
+//   employee: {
+//     id: string;
+//     name: string;
+//   };
+//   days: number;
+//   start_date: string;
+//   end_date: string;
+//   reason: string;
+//   status: string;
+//   approved_by: string | null;
+//   approved_at: string | null;
+//   created_at: string;
+//   updated_at: string;
+// };
 
 export const getColumns = (
   isAdmin: boolean,
@@ -52,13 +53,13 @@ export const getColumns = (
   //   },
   // },
   ...(isAdmin
-    ? [
+    ? ([
         {
           accessorKey: "employee_name",
           header: "Employee",
           cell: ({ row }) => row.original.employee?.name ?? "-",
         },
-      ]
+      ] satisfies ColumnDef<Leave>[])
     : []),
   {
     accessorKey: "type",

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { AuthContext } from "@/auth/auth-context";
+import { AuthContext, type User } from "@/auth/auth-context";
 import { useNavigate } from "react-router";
 
 interface AuthProviderProps {
@@ -12,7 +12,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

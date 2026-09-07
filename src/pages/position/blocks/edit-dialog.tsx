@@ -33,13 +33,13 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import type { Position } from "../page";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
 import { useDepartments } from "@/hooks/use-departments";
 import { toast } from "sonner";
+import type { Position } from "@/hooks/use-positions";
 
 interface Props {
   open: boolean;

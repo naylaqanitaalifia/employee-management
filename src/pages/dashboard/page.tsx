@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { getColumns as getLeaveColumns } from "./blocks/leave-columns";
 import { getColumns as getEmployeeColumns } from "./blocks/employee-columns";
-import { format } from "date-fns";
 import { DataTable } from "@/components/ui/data-table";
 import { useLeaves } from "@/hooks/use-leaves";
 import { AttendanceCard } from "./blocks/attendance-card";
@@ -80,8 +79,6 @@ export function Page() {
   // });
 
   const [date, setDate] = useState<Date | undefined>(new Date());
-
-  const today = new Date();
 
   const calendarClasses = isAdmin ? "max-h-[320px]" : "max-h-[200px]";
 
@@ -282,9 +279,7 @@ export function Page() {
         </div>
       </div>
 
-      {isAdmin && (
-        <DataTable columns={employeeColumns} data={employees} />
-      )}
+      {isAdmin && <DataTable columns={employeeColumns} data={employees} />}
     </div>
   );
 }

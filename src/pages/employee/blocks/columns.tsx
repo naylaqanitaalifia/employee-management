@@ -9,25 +9,26 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { capitalize } from "@/lib/helpers";
+import type { Employee } from "@/hooks/use-employees";
 
-export type Employee = {
-  id: string;
-  name: string;
-  created_at: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  position: {
-    id: string;
-    name: string;
-  };
-  status: string;
-};
+// export type Employee = {
+//   id: string;
+//   name: string;
+//   created_at: string;
+//   department: {
+//     id: string;
+//     name: string;
+//   };
+//   position: {
+//     id: string;
+//     name: string;
+//   };
+//   status: string;
+// };
 
 export const getColumns = (
-  onEdit: (department: Employee) => void,
-  onDelete: (department: Employee) => void,
+  onEdit: (employee: Employee) => void,
+  onDelete: (employee: Employee) => void,
 ): ColumnDef<Employee>[] => [
   {
     accessorKey: "name",

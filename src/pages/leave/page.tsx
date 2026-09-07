@@ -10,9 +10,9 @@ import {
 } from "./";
 import { DataTable } from "@/components/ui/data-table";
 import { useDebounce } from "use-debounce";
-import { getColumns, type Leave } from "./blocks/columns";
+import { getColumns } from "./blocks/columns";
 // import { Spinner } from "@/components/ui/spinner";
-import { useLeaves } from "@/hooks/use-leaves";
+import { useLeaves, type Leave } from "@/hooks/use-leaves";
 import { ContentLoader } from "@/components/common/content-loader";
 import { useAuth } from "@/auth/auth-context";
 
@@ -60,7 +60,7 @@ export function Page() {
     isAdmin,
     handleDetail,
     handleEdit,
-    handleReject,
+    // handleReject,
     handleDelete,
   );
 

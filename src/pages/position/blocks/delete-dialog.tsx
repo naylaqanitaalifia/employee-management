@@ -5,11 +5,11 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { PiWarning } from "react-icons/pi";
-import type { Position } from "../page";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
 import { toast } from "sonner";
+import type { Position } from "@/hooks/use-positions";
 
 interface Props {
   open: boolean;

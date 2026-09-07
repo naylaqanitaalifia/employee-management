@@ -22,7 +22,7 @@ export function Page() {
   const [debouncedSearch] = useDebounce(search, 500);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  // const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
@@ -41,10 +41,10 @@ export function Page() {
     setSearch("");
   };
 
-  const handleDetail = (payroll: Payroll) => {
-    setSelectedPayroll(payroll);
-    setDetailDialogOpen(true);
-  };
+  // const handleDetail = (payroll: Payroll) => {
+  //   setSelectedPayroll(payroll);
+  //   setDetailDialogOpen(true);
+  // };
 
   const handleEdit = (payroll: Payroll) => {
     setSelectedPayroll(payroll);
@@ -70,7 +70,7 @@ export function Page() {
 
   const columns = getColumns(
     isAdmin,
-    handleDetail,
+    // handleDetail,
     handleEdit,
     handleProcess,
     handlePay,

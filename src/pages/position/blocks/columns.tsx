@@ -7,12 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-export type Position = {
-  id: string;
-  name: string;
-  created_at: string;
-};
+import type { Position } from "@/hooks/use-positions";
 
 export const getColumns = (
   onEdit: (position: Position) => void,

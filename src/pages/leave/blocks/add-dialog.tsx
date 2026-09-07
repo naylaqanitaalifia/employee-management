@@ -78,7 +78,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employee_id: user?.employee_id,
+      employee_id: user?.employee_id ?? undefined,
       type: "",
       date: undefined,
       reason: "",
@@ -88,7 +88,7 @@ export function AddDialog({ open, onOpenChange }: Props) {
   useEffect(() => {
     if (!open) {
       form.reset({
-        employee_id: user?.employee_id,
+        employee_id: user?.employee_id ?? undefined,
         type: "",
         date: undefined,
         reason: "",

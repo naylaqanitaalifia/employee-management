@@ -10,17 +10,7 @@ import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
 import { ContentLoader } from "@/components/common/content-loader";
-
-export interface Position {
-  id: string;
-  name: string;
-  created_at: string;
-  department: {
-    id: string;
-    name: string;
-    created_at: string;
-  };
-}
+import type { Position } from "@/hooks/use-positions";
 
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);

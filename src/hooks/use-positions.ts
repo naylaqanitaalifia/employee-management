@@ -5,9 +5,11 @@ import axios from "axios";
 export interface Position {
   id: string;
   name: string;
+  created_at: string;
   department: {
     id: string;
     name: string;
+    created_at: string;
   };
 }
 

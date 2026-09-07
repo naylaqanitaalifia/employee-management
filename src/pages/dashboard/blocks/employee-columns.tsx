@@ -1,32 +1,18 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import type { ColumnDef } from "@tanstack/react-table";
-import { PiPencil, PiTrash } from "react-icons/pi";
+// import { PiPencil, PiTrash } from "react-icons/pi";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-export type Employee = {
-  id: string;
-  name: string;
-  created_at: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  position: {
-    id: string;
-    name: string;
-  };
-  status: string;
-};
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+import type { Employee } from "@/hooks/use-employees";
 
 export const getColumns = (
-  onEdit?: (employee: Employee) => void,
-  onDelete?: (employee: Employee) => void,
+  // onEdit: (employee: Employee) => void,
+  // onDelete: (employee: Employee) => void,
 ): ColumnDef<Employee>[] => [
   {
     accessorKey: "created_at",
@@ -92,36 +78,36 @@ export const getColumns = (
       );
     },
   },
-  {
-    id: "actions",
-    header: () => <div className="text-center">Actions</div>,
-    size: 150,
-    cell: ({ row }) => {
-      const department = row.original;
-      return (
-        <div className="flex items-center justify-center">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" onClick={() => onEdit(department)}>
-                <PiPencil size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Edit</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
-                onClick={() => onDelete(department)}
-              >
-                <PiTrash size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Delete</TooltipContent>
-          </Tooltip>
-        </div>
-      );
-    },
-  },
+  // {
+  //   id: "actions",
+  //   header: () => <div className="text-center">Actions</div>,
+  //   size: 150,
+  //   cell: ({ row }) => {
+  //     const department = row.original;
+  //     return (
+  //       <div className="flex items-center justify-center">
+  //         <Tooltip>
+  //           <TooltipTrigger asChild>
+  //             <Button variant="ghost" onClick={() => onEdit(department)}>
+  //               <PiPencil size={18} />
+  //             </Button>
+  //           </TooltipTrigger>
+  //           <TooltipContent>Edit</TooltipContent>
+  //         </Tooltip>
+  //         <Tooltip>
+  //           <TooltipTrigger asChild>
+  //             <Button
+  //               variant="ghost"
+  //               className="text-red-500 cursor-pointer hover:bg-red-500/10 hover:text-red-500 rounded-md"
+  //               onClick={() => onDelete(department)}
+  //             >
+  //               <PiTrash size={18} />
+  //             </Button>
+  //           </TooltipTrigger>
+  //           <TooltipContent>Delete</TooltipContent>
+  //         </Tooltip>
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

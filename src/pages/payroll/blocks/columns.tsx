@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Banknote, BanknoteArrowUp, Eye } from "lucide-react";
+import { Banknote, BanknoteArrowUp } from "lucide-react";
 import { capitalize, formatRupiah } from "@/lib/helpers";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import type { Payroll } from "@/hooks/use-payrolls";
@@ -14,7 +14,7 @@ import { format } from "date-fns";
 
 export const getColumns = (
   isAdmin: boolean,
-  onDetail: (payroll: Payroll) => void,
+  // onDetail: (payroll: Payroll) => void,
   onEdit: (payroll: Payroll) => void,
   onProcess: (payroll: Payroll) => void,
   onPay: (payroll: Payroll) => void,
@@ -35,13 +35,13 @@ export const getColumns = (
   //   },
   // },
   ...(isAdmin
-    ? [
+    ? ([
         {
           accessorFn: (row) => row.employee?.name || "-",
           id: "employee_name",
           header: "Employee",
         },
-      ]
+      ] satisfies ColumnDef<Payroll>[])
     : []),
   {
     accessorKey: "period_month",
@@ -120,7 +120,7 @@ export const getColumns = (
     },
   },
   ...(isAdmin
-    ? [
+    ? ([
         {
           id: "actions",
           header: () => <div className="text-center">Actions</div>,
@@ -191,6 +191,6 @@ export const getColumns = (
             );
           },
         },
-      ]
+      ] satisfies ColumnDef<Payroll>[])
     : []),
 ];

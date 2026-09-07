@@ -10,7 +10,6 @@ import {
 import { apiConfig } from "@/config/api.config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { Leave } from "./columns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,6 +21,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { capitalize, formatDateRange } from "@/lib/helpers";
 import { toast } from "sonner";
+import type { Leave } from "@/hooks/use-leaves";
 
 interface Props {
   open: boolean;

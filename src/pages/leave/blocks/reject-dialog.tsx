@@ -23,8 +23,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Leave } from "./columns";
 import { toast } from "sonner";
+import type { Leave } from "@/hooks/use-leaves";
 
 interface Props {
   open: boolean;

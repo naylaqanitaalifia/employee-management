@@ -18,7 +18,7 @@ export interface Leave {
   approved_at: string;
   created_at: string;
   updated_at: string;
-}
+};
 
 const baseUrl = apiConfig.API_URL;
 

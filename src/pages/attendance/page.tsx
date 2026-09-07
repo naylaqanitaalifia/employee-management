@@ -1,24 +1,20 @@
 import { useState } from "react";
 import { AddDialog } from "./blocks/add-dialog";
-import { EditDialog } from "./blocks/edit-dialog";
-import { DeleteDialog } from "./blocks/delete-dialog";
-import type { Employee } from "@/hooks/use-employees";
 import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
-import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
 import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
   const [isLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    null,
-  );
+  // const [editDialogOpen, setEditDialogOpen] = useState(false);
+  // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  // const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+  //   null,
+  // );
   const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
+  // const [debouncedSearch] = useDebounce(search, 500);
 
   const attendances = [
     {
@@ -52,17 +48,17 @@ export function Page() {
     setSearch("");
   };
 
-  const handleEdit = (employee: Employee) => {
-    setSelectedEmployee(employee);
-    setEditDialogOpen(true);
-  };
+  // const handleEdit = (employee: Employee) => {
+  //   setSelectedEmployee(employee);
+  //   setEditDialogOpen(true);
+  // };
 
-  const handleDelete = (employee: Employee) => {
-    setSelectedEmployee(employee);
-    setDeleteDialogOpen(true);
-  };
+  // const handleDelete = (employee: Employee) => {
+  //   setSelectedEmployee(employee);
+  //   setDeleteDialogOpen(true);
+  // };
 
-  const columns = getColumns(handleEdit, handleDelete);
+  const columns = getColumns();
 
   if (isLoading) {
     return <ContentLoader />;
@@ -95,18 +91,18 @@ export function Page() {
       />
 
       {/* EDIT DIALOG */}
-      <EditDialog
+      {/* <EditDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
         employee={selectedEmployee}
-      />
+      /> */}
 
       {/* DELETE DIALOG */}
-      <DeleteDialog
+      {/* <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         employee={selectedEmployee}
-      />
+      /> */}
     </div>
   );
 }
