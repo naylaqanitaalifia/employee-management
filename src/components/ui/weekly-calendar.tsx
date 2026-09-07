@@ -1,7 +1,6 @@
 import { addDays, addWeeks, format, startOfWeek, subWeeks } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface WeeklyCalendarProps {
   value?: Date;

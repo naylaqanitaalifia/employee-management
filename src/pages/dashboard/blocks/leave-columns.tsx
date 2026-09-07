@@ -5,8 +5,8 @@ import { capitalize, formatDateRange, getLabel } from "@/lib/helpers";
 import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
 
 export const getColumns = (
-  onEdit?: (leave: Leave) => void,
-  onDelete?: (leave: Leave) => void,
+  // onEdit?: (leave: Leave) => void,
+  // onDelete?: (leave: Leave) => void,
 ): ColumnDef<Leave>[] => [
   {
     accessorKey: "type",

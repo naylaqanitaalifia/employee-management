@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/command";
 import { ChevronDownIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useEmployees } from "@/hooks/use-employees";
 import { toast } from "sonner";
 import { useAuth } from "@/auth/auth-context";
 import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
@@ -74,7 +73,6 @@ export function AddDialog({ open, onOpenChange }: Props) {
   const queryClient = useQueryClient();
   // console.log(user);
 
-  const [employeePopoverOpen, setEmployeePopoverOpen] = useState(false);
   const [typePopoverOpen, setTypePopoverOpen] = useState(false);
 
   const form = useForm<SchemaType>({

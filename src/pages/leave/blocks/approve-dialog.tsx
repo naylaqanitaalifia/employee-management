@@ -3,9 +3,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { apiConfig } from "@/config/api.config";
 import type { Employee } from "@/hooks/use-employees";

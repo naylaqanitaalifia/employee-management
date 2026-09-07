@@ -17,9 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import {
   TerminalSquareIcon,
-  BotIcon,
-  BookOpenIcon,
-  Settings2Icon,
   LifeBuoyIcon,
   SendIcon,
   FrameIcon,

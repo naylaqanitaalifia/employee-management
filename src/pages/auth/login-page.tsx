@@ -1,9 +1,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  AlertCircle,
-  Check,
   Eye,
   EyeOff,
   LoaderCircleIcon,
@@ -23,7 +21,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { toAbsoluteUrl } from "@/lib/helpers";
 import { useAuth } from "@/auth/auth-context";
-import { useNavigate } from "react-router";
 // import { resolvePostLoginPath } from '@/auth/require-auth';
 // import { useAuth } from '../context/auth-context';
 // import { getSigninSchema, SigninSchemaType } from '../forms/signin-schema';
@@ -40,9 +37,9 @@ export function LoginPage() {
   const { login } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [redirectAfterLogin, setRedirectAfterLogin] = useState(false);
+  // const [error, setError] = useState<string | null>(null);
+  // const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  // const [redirectAfterLogin, setRedirectAfterLogin] = useState(false);
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),

@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import type { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Ban, Check, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 import { capitalize, formatDate, getLabel } from "@/lib/helpers";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import { useAuth } from "@/auth/auth-context";
@@ -35,7 +34,7 @@ export const getColumns = (
   isAdmin: boolean,
   onDetail: (leave: Leave) => void,
   onEdit: (leave: Leave) => void,
-  onReject: (leave: Leave) => void,
+  // onReject: (leave: Leave) => void,
   onDelete: (leave: Leave) => void,
 ): ColumnDef<Leave>[] => [
   // {

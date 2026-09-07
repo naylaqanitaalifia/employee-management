@@ -1,20 +1,16 @@
 import {
   PiBank,
   PiBankBold,
-  PiBankFill,
   PiBuildingOffice,
   PiBuildingOfficeBold,
   PiCalendarCheck,
   PiCalendarCheckBold,
-  PiCalendarCheckFill,
   PiIdentificationBadge,
   PiIdentificationBadgeBold,
   PiSquaresFour,
   PiSquaresFourBold,
-  PiSquaresFourFill,
   PiUsers,
   PiUsersBold,
-  PiUsersFill,
 } from "react-icons/pi";
 import { NavLink } from "react-router";
 

@@ -17,8 +17,8 @@ export type Attendance = {
 };
 
 export const getColumns = (
-  onEdit: (attendance: any) => void,
-  onDelete: (attendance: any) => void,
+  // onEdit: (attendance: any) => void,
+  // onDelete: (attendance: any) => void,
 ): ColumnDef<any>[] => [
   {
     accessorKey: "date",

@@ -82,7 +82,6 @@ export function Page() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const today = new Date();
-  const formattedDate = format(today, "EEEE, MMMM dd yyyy");
 
   const calendarClasses = isAdmin ? "max-h-[320px]" : "max-h-[200px]";
 

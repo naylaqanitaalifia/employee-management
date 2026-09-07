@@ -10,7 +10,7 @@ import { getColumns } from "./blocks/columns";
 import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

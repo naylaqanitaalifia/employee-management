@@ -96,7 +96,6 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
   const queryClient = useQueryClient();
   const { data: departments = [] } = useDepartments();
   const { data: positions = [] } = usePositions();
-  const { data: employees = [] } = useEmployees();
 
   const [departmentPopoverOpen, setDepartmentPopoverOpen] = useState(false);
   const [positionPopoverOpen, setPositionPopoverOpen] = useState(false);
@@ -546,7 +545,7 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
+                  variant="primary"
                   className="w-30"
                   disabled={update.isPending}
                 >

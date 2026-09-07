@@ -82,7 +82,6 @@ type LeavePayload = {
 export function EditDialog({ open, onOpenChange, leave }: Props) {
   const queryClient = useQueryClient();
 
-  const [employeePopoverOpen, setEmployeePopoverOpen] = useState(false);
   const [typePopoverOpen, setTypePopoverOpen] = useState(false);
 
   const form = useForm<SchemaType>({
@@ -95,7 +94,7 @@ export function EditDialog({ open, onOpenChange, leave }: Props) {
     },
   });
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["leave", leave?.id],
     queryFn: async () => {
       if (!leave?.id) {

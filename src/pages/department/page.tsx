@@ -5,7 +5,6 @@ import { DeleteDialog } from "./blocks/delete-dialog";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
-import { Spinner } from "@/components/ui/spinner";
 import { DataTable } from "../../components/ui/data-table";
 import { getColumns, type Department } from "./blocks/columns";
 import { ListToolbar } from "./blocks/list-toolbar";

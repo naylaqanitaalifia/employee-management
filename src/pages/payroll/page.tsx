@@ -10,7 +10,6 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
-import { Spinner } from "@/components/ui/spinner";
 import { usePayrolls, type Payroll } from "@/hooks/use-payrolls";
 import { ContentLoader } from "@/components/common/content-loader";
 import { useAuth } from "@/auth/auth-context";
@@ -36,7 +35,6 @@ export function Page() {
   const {
     data: payrolls = [],
     isLoading,
-    isError,
   } = usePayrolls(debouncedSearch);
 
   const handleReset = () => {

@@ -59,7 +59,7 @@ const leaveTypeMap: Record<string, string> = {
 export function DetailDialog({ open, onOpenChange, leave, onReject }: Props) {
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["leave", leave?.id],
     queryFn: async () => {
       if (!leave?.id) {

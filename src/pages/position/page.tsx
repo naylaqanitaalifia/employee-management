@@ -5,7 +5,6 @@ import { DeleteDialog } from "./blocks/delete-dialog";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
-import { Spinner } from "@/components/ui/spinner";
 import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
@@ -36,7 +35,6 @@ export function Page() {
   const {
     data: positions = [],
     isLoading,
-    isError,
   } = useQuery<Position[]>({
     queryKey: ["positions", debouncedSearch],
     queryFn: async () => {
