@@ -25,8 +25,8 @@ export type Employee = {
 };
 
 export const getColumns = (
-  onEdit?: (department: Employee) => void,
-  onDelete?: (department: Employee) => void,
+  onEdit?: (employee: Employee) => void,
+  onDelete?: (employee: Employee) => void,
 ): ColumnDef<Employee>[] => [
   {
     accessorKey: "created_at",

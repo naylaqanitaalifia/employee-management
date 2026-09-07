@@ -20,11 +20,11 @@ export const getColumns = (
 ): ColumnDef<Position>[] => [
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Position",
   },
   {
     accessorKey: "department.name",
-    header: "Department Name",
+    header: "Department",
   },
   {
     accessorKey: "created_at",

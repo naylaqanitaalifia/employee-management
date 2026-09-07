@@ -32,6 +32,12 @@ export function Page() {
     queryFn: async () => {
       const { data } = await axios.get(`${baseUrl}/departments`, {
         params: {
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: "",
           search: debouncedSearch,
         },
       });

@@ -1,11 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { getColumns } from "./blocks/leave-columns";
+import { getColumns as getLeaveColumns } from "./blocks/leave-columns";
+import { getColumns as getEmployeeColumns } from "./blocks/employee-columns";
 import { format } from "date-fns";
 import { DataTable } from "@/components/ui/data-table";
 import { useLeaves } from "@/hooks/use-leaves";
 import { AttendanceCard } from "./blocks/attendance-card";
 import { WeeklyCalendar } from "@/components/ui/weekly-calendar";
 import { useState } from "react";
+import { useAuth } from "@/auth/auth-context";
+import { MonthlyAttendanceChart } from "./blocks/monthly-attendance-chart";
+import { useEmployees } from "@/hooks/use-employees";
+import {
+  PiBuildingOffice,
+  PiIdentificationBadge,
+  PiUsers,
+} from "react-icons/pi";
+import { useDepartments } from "@/hooks/use-departments";
+import { usePositions } from "@/hooks/use-positions";
 
 const schedules = [
   {
@@ -51,8 +62,18 @@ const schedules = [
 ];
 
 export function Page() {
-  const leaveColumns = getColumns();
+  const auth = useAuth();
+  const isAdmin = auth.user?.role === "ADMIN";
+
+  const { data: departments = [] } = useDepartments();
+  const { data: positions = [] } = usePositions();
+
+  const leaveColumns = getLeaveColumns();
   const { data: leaves = [] } = useLeaves();
+
+  const employeeColumns = getEmployeeColumns();
+  const { data: employees = [] } = useEmployees();
+
   // const [date, setDate] = useState<DateRange | undefined>({
   //   from: new Date(new Date().getFullYear(), 0, 12),
   //   to: addDays(new Date(new Date().getFullYear(), 0, 12), 30),
@@ -62,6 +83,8 @@ export function Page() {
 
   const today = new Date();
   const formattedDate = format(today, "EEEE, MMMM dd yyyy");
+
+  const calendarClasses = isAdmin ? "max-h-[320px]" : "max-h-[200px]";
 
   return (
     <div className="p-4 space-y-6 bg-background h-full">
@@ -78,128 +101,151 @@ export function Page() {
         <AttendanceCard />
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        <Card>
-          <CardContent>
-            <div className="flex flex-col gap-2">
-              <h6 className="text-sm text-muted-foreground">
-                Remaining Annual Leave
-              </h6>
-              <p className="text-xl font-semibold">
-                8 / 12{" "}
-                <span className="text-xs text-muted-foreground">Days</span>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      {!isAdmin && (
+        <div className="grid grid-cols-4 gap-4">
+          <Card>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm text-muted-foreground">
+                  Remaining Annual Leave
+                </h6>
+                <p className="text-xl font-semibold">
+                  8 / 12{" "}
+                  <span className="text-xs text-muted-foreground">Days</span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <div className="flex flex-col gap-2">
-              <h6 className="text-sm text-muted-foreground">
-                Monthly Attendance
-              </h6>
-              <p className="text-xl font-semibold">
-                19 / 19{" "}
-                <span className="text-xs text-muted-foreground">Days</span>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm text-muted-foreground">
+                  Monthly Attendance
+                </h6>
+                <p className="text-xl font-semibold">
+                  19 / 19{" "}
+                  <span className="text-xs text-muted-foreground">Days</span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <div className="flex flex-col gap-2">
-              <h6 className="text-sm text-muted-foreground">Pending Request</h6>
-              <p className="text-xl font-semibold">
-                2{" "}
-                <span className="text-xs text-muted-foreground">Requests</span>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm text-muted-foreground">
+                  Pending Request
+                </h6>
+                <p className="text-xl font-semibold">
+                  2{" "}
+                  <span className="text-xs text-muted-foreground">
+                    Requests
+                  </span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <div className="flex flex-col gap-2">
-              <h6 className="text-sm text-muted-foreground">Total Overtime</h6>
-              <p className="text-xl font-semibold">
-                12.5{" "}
-                <span className="text-xs text-muted-foreground">Hours</span>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <Card>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm text-muted-foreground">
+                  Total Overtime
+                </h6>
+                <p className="text-xl font-semibold">
+                  12.5{" "}
+                  <span className="text-xs text-muted-foreground">Hours</span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <div className="grid grid-cols-12 gap-4">
-        {/* <div className="flex flex-col gap-4 col-span-5">
-          <div className="grid grid-cols-3 gap-4">
-            <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Employees
-                  </p>
+        {isAdmin && (
+          <div className="flex flex-col gap-4 col-span-8">
+            <div className="grid grid-cols-3 gap-4">
+              <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Departments
+                    </p>
 
-                  <h2 className="mt-2 text-3xl font-bold tracking-tight">50</h2>
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight">
+                      {departments.length}
+                    </h2>
 
-                  <p className="mt-1 text-xs text-emerald-600">+4 this month</p>
+                    {/* <p className="mt-1 text-xs text-emerald-600">
+                      +4 this month
+                    </p> */}
+                  </div>
+
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                    <PiBuildingOffice className="size-5 text-primary" />
+                  </div>
                 </div>
+              </Card>
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <User className="size-5 text-primary" />
+              <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Positions
+                    </p>
+
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight">
+                      {positions.length}
+                    </h2>
+
+                    {/* <p className="mt-1 text-xs text-emerald-600">
+                      +4 this month
+                    </p> */}
+                  </div>
+
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                    <PiIdentificationBadge className="size-5 text-primary" />
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
 
-            <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Employees
-                  </p>
+              <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Employees
+                    </p>
 
-                  <h2 className="mt-2 text-3xl font-bold tracking-tight">50</h2>
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight">
+                      {employees.length}
+                    </h2>
 
-                  <p className="mt-1 text-xs text-emerald-600">+4 this month</p>
+                    {/* <p className="mt-1 text-xs text-emerald-600">
+                      +4 this month
+                    </p> */}
+                  </div>
+
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                    <PiUsers className="size-5 text-primary" />
+                  </div>
                 </div>
+              </Card>
+            </div>
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <User className="size-5 text-primary" />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Employees
-                  </p>
-
-                  <h2 className="mt-2 text-3xl font-bold tracking-tight">50</h2>
-
-                  <p className="mt-1 text-xs text-emerald-600">+4 this month</p>
-                </div>
-
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <User className="size-5 text-primary" />
-                </div>
-              </div>
-            </Card>
+            <div className="col-span-3">
+              <MonthlyAttendanceChart />
+            </div>
           </div>
+        )}
 
-          <div className="col-span-3">
-            <MonthlyAttendanceChart />
+        {!isAdmin && (
+          <div className="flex flex-col gap-4 col-span-8">
+            <h3>Recent Requests</h3>
+            <DataTable columns={leaveColumns} data={leaves} />
           </div>
-
-          <DataTable columns={columns} data={employees} />
-        </div> */}
-        <div className="flex flex-col gap-4 col-span-8">
-          <h3>Recent Requests</h3>
-          <DataTable columns={leaveColumns} data={leaves} />
-        </div>
+        )}
 
         <div className="flex flex-col gap-4 col-span-4">
           <Card>
@@ -209,7 +255,9 @@ export function Page() {
               <div className="flex flex-col gap-4">
                 <h4 className="text-base">Schedule</h4>
 
-                <div className="max-h-[200px] overflow-y-scroll space-y-6">
+                <div
+                  className={`${calendarClasses} overflow-y-scroll space-y-6`}
+                >
                   {[...schedules]
                     .sort((a, b) => a.time.localeCompare(b.time))
                     .map((schedule) => (
@@ -234,6 +282,10 @@ export function Page() {
           </Card>
         </div>
       </div>
+
+      {isAdmin && (
+        <DataTable columns={employeeColumns} data={employees} />
+      )}
     </div>
   );
 }

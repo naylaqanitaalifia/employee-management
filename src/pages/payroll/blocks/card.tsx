@@ -1,3 +1,4 @@
+import { ContentLoader } from "@/components/common/content-loader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,8 +31,12 @@ const getStatusVariant = (status: string) => {
 };
 
 export function PayrollCard() {
-  const { data: payrolls } = usePayrolls();
+  const { data: payrolls, isLoading } = usePayrolls();
   const latestPayroll = payrolls?.[0];
+
+  if (isLoading) {
+    return <ContentLoader />;
+  }
 
   if (!latestPayroll) {
     return (
@@ -49,6 +54,8 @@ export function PayrollCard() {
       </Card>
     );
   }
+
+  
 
   return (
     <Card>
@@ -89,7 +96,7 @@ export function PayrollCard() {
               <div className="flex items-center justify-between">
                 <span className="text-sm">Basic Salary</span>
                 <span className="text-muted-foreground">
-                  {formatRupiah(latestPayroll?.basic_salary)}
+                  {formatRupiah(latestPayroll.basic_salary)}
                 </span>
               </div>
 
@@ -97,7 +104,7 @@ export function PayrollCard() {
               <div className="flex items-center justify-between">
                 <span className="text-sm">Allowance</span>
                 <span className="text-muted-foreground">
-                  {formatRupiah(latestPayroll?.allowance)}
+                  {formatRupiah(latestPayroll.allowance)}
                 </span>
               </div>
 
@@ -105,7 +112,7 @@ export function PayrollCard() {
               <div className="flex items-center justify-between">
                 <span className="text-sm">Overtime</span>
                 <span className="text-muted-foreground">
-                  {formatRupiah(latestPayroll?.overtime_pay)}
+                  {formatRupiah(latestPayroll.overtime_pay)}
                 </span>
               </div>
 
@@ -113,7 +120,7 @@ export function PayrollCard() {
               <div className="flex items-center justify-between">
                 <span className="text-sm">Deduction</span>
                 <span className="text-muted-foreground">
-                  {formatRupiah(latestPayroll?.deduction)}
+                  {formatRupiah(latestPayroll.deduction)}
                 </span>
               </div>
             </div>
@@ -121,14 +128,14 @@ export function PayrollCard() {
 
           <div className="flex flex-col items-center justify-center gap-4 text-center">
             <h3 className="font-bold text-muted-foreground">
-              {format(latestPayroll?.period_month, "MMMM yyyy")} • Net Salary
+              {format(latestPayroll.period_month, "MMMM yyyy")} • Net Salary
             </h3>
             <span className="text-2xl font-bold">
-              {formatRupiah(latestPayroll?.net_salary)}
+              {formatRupiah(latestPayroll.net_salary)}
             </span>
             <span>
               <Badge
-                variant={getStatusVariant(latestPayroll?.status ?? "") as any}
+                variant={getStatusVariant(latestPayroll.status ?? "") as any}
                 appearance="light"
                 className="rounded-full"
               >

@@ -5,6 +5,7 @@ import {
   DetailDialog,
   EditDialog,
   DeleteDialog,
+  RejectDialog,
   LeaveCards,
 } from "./";
 import { DataTable } from "@/components/ui/data-table";
@@ -78,7 +79,7 @@ export function Page() {
         </p>
       </div>
 
-      <LeaveCards />
+      {!isAdmin && <LeaveCards />}
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
@@ -114,6 +115,12 @@ export function Page() {
       <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
+        leave={selectedLeave}
+      />
+
+      <RejectDialog
+        open={rejectDialogOpen}
+        onOpenChange={setRejectDialogOpen}
         leave={selectedLeave}
       />
     </div>

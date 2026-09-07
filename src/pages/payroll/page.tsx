@@ -96,7 +96,7 @@ export function Page() {
         </p>
       </div>
 
-      <PayrollCard />
+      {!isAdmin && <PayrollCard />}
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 

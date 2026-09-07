@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import type { Leave } from "@/hooks/use-leaves";
-import { capitalize, formatDate, formatDateRange, getLabel } from "@/lib/helpers";
+import { capitalize, formatDateRange, getLabel } from "@/lib/helpers";
 import { LEAVE_TYPE_OPTIONS } from "@/constants/leave";
 
 export const getColumns = (
