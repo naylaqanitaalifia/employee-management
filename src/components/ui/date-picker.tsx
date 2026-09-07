@@ -21,7 +21,7 @@ export function DatePicker({
   disabled,
   minDate,
   maxDate,
-  className,
+  // className,
 }: DatePickerProps) {
   const [open, setOpen] = useState(false);
 

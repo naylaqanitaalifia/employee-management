@@ -1,10 +1,8 @@
-import { BrowserRouter } from "react-router";
 import "./App.css";
 import { AppRoutingSetup } from "./routing/app-routing-setup";
 import { Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { ScreenLoader } from "@/components/common/screen-loader";
-import { AuthProvider } from "@/auth/auth-provider";
 
 function App() {
   return (

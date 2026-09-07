@@ -10,7 +10,6 @@ import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { useDebounce } from "use-debounce";
 import { getColumns } from "./blocks/columns";
-import { Spinner } from "@/components/ui/spinner";
 import { ContentLoader } from "@/components/common/content-loader";
 
 export function Page() {
@@ -26,7 +25,6 @@ export function Page() {
   const {
     data: employees = [],
     isLoading,
-    isError,
   } = useQuery({
     queryKey: ["employees", debouncedSearch],
     queryFn: async () => {

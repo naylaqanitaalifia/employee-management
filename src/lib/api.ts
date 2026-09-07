@@ -1,9 +1,7 @@
-import axios, {
+import {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { apiConfig } from "@/config/api.config";
-import { useAuth } from "@/auth/auth-context";
 
 // const api = axios.create({
 //   baseURL: apiConfig.API_URL,
