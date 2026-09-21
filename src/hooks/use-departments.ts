@@ -9,9 +9,9 @@ export interface Department {
 
 const baseUrl = apiConfig.API_URL;
 
-export function useDepartments() {
+export function useDepartments(debouncedSearch: string = "") {
   return useQuery<Department[]>({
-    queryKey: ["departments"],
+    queryKey: ["departments", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${baseUrl}/departments`, {
         params: {
@@ -20,12 +20,15 @@ export function useDepartments() {
           with_deleted: false,
           order_field: "created_at",
           order_direction: "DESC",
-          filter: "",
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
         },
       });
 
       return data.data.list;
     },
     staleTime: 1000 * 60 * 5,
+    placeholderData: (prev) => prev,
   });
 }

@@ -25,6 +25,7 @@ export function Page() {
   const {
     data: departments = [],
     isLoading,
+    isFetching,
     isError,
   } = useQuery<Department[]>({
     queryKey: ["departments", debouncedSearch],
@@ -36,8 +37,9 @@ export function Page() {
           with_deleted: false,
           order_field: "created_at",
           order_direction: "DESC",
-          filter: "",
-          search: debouncedSearch,
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
         },
       });
 
@@ -86,6 +88,7 @@ export function Page() {
       <DataTable
         columns={columns}
         data={departments}
+        isLoading={isFetching}
         renderToolbar={() => (
           <ListToolbar
             search={search}

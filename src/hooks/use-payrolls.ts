@@ -25,17 +25,25 @@ export interface Payroll {
 
 const baseUrl = apiConfig.API_URL;
 
-export function usePayrolls(search?: string) {
+export function usePayrolls(debouncedSearch?: string) {
   return useQuery<Payroll[]>({
-    queryKey: ["payrolls", search],
+    queryKey: ["payrolls", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${baseUrl}/payrolls`, {
         params: {
-          search,
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
         },
       });
-      return data.data;
+      return data.data.list;
     },
     staleTime: 1000 * 60 * 5,
+    placeholderData: (prev) => prev,
   });
 }

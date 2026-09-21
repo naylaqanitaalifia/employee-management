@@ -25,18 +25,41 @@ export function Page() {
   const {
     data: employees = [],
     isLoading,
+    isFetching,
+    isError,
   } = useQuery({
     queryKey: ["employees", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/employees`, {
         params: {
-          search: debouncedSearch,
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
         },
       });
-      return data.data;
+      return data.data.list;
     },
     placeholderData: (prev) => prev,
   });
+
+  const { data: employeeDetail, isLoading: isLoadingEmployeeDetail } = useQuery(
+    {
+      queryKey: ["employees", selectedEmployee?.id],
+      queryFn: async () => {
+        const { data } = await axios.get(
+          `${apiConfig.API_URL}/employees/${selectedEmployee?.id}`,
+        );
+        return data.data;
+      },
+      placeholderData: (prev) => prev,
+      enabled: editDialogOpen && !!selectedEmployee?.id,
+    },
+  );
 
   const handleReset = () => {
     setSearch("");
@@ -58,6 +81,10 @@ export function Page() {
     return <ContentLoader />;
   }
 
+  if (isError) {
+    return <div className="">Failed to load employees.</div>;
+  }
+
   return (
     <div className="p-4 space-y-6 bg-background h-full">
       <div>
@@ -74,6 +101,7 @@ export function Page() {
       <DataTable
         columns={columns}
         data={employees}
+        isLoading={isFetching}
         renderToolbar={() => (
           <ListToolbar
             search={search}
@@ -88,7 +116,7 @@ export function Page() {
       <EditDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
-        employee={selectedEmployee}
+        employee={employeeDetail}
       />
 
       {/* DELETE DIALOG */}

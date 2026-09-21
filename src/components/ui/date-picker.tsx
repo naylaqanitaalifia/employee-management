@@ -34,7 +34,10 @@ export function DatePicker({
           disabled={disabled}
           className={cn("w-full flex justify-between")}
         >
-          {value ? format(value, "yyyy-MM-dd") : "Select date"}
+          {/* {value ? format(value, "yyyy-MM-dd") : "Select date"} */}
+          {value && !isNaN(value.getTime())
+            ? format(value, "yyyy-MM-dd")
+            : "Select date"}
           <PiCalendarDots />
         </Button>
       </PopoverTrigger>

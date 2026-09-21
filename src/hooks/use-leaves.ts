@@ -18,21 +18,29 @@ export interface Leave {
   approved_at: string;
   created_at: string;
   updated_at: string;
-};
+}
 
 const baseUrl = apiConfig.API_URL;
 
-export function useLeaves(search?: string) {
+export function useLeaves(debouncedSearch?: string) {
   return useQuery<Leave[]>({
-    queryKey: ["leaves", search],
+    queryKey: ["leaves", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${baseUrl}/leaves`, {
         params: {
-          search,
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
         },
       });
-      return data.data;
+      return data.data.list;
     },
     staleTime: 1000 * 60 * 5,
+    placeholderData: (prev) => prev,
   });
 }

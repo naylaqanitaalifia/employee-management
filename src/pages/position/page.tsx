@@ -25,15 +25,25 @@ export function Page() {
   const {
     data: positions = [],
     isLoading,
+    isFetching,
+    isError,
   } = useQuery<Position[]>({
     queryKey: ["positions", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/positions`, {
         params: {
-          search: debouncedSearch,
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ search: debouncedSearch })
+            : "",
         },
       });
-      return data.data;
+      
+      return data.data.list;
     },
     placeholderData: (prev) => prev,
   });
@@ -58,6 +68,10 @@ export function Page() {
     return <ContentLoader />;
   }
 
+  if (isError) {
+    return <div className="">Failed to load positions.</div>;
+  }
+
   return (
     <div className="p-4 space-y-6 bg-background h-full">
       <div>
@@ -74,6 +88,7 @@ export function Page() {
       <DataTable
         columns={columns}
         data={positions}
+        isLoading={isFetching}
         renderToolbar={() => (
           <ListToolbar
             search={search}

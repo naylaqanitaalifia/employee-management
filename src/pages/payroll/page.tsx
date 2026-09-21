@@ -35,6 +35,7 @@ export function Page() {
   const {
     data: payrolls = [],
     isLoading,
+    isFetching
   } = usePayrolls(debouncedSearch);
 
   const handleReset = () => {
@@ -101,6 +102,7 @@ export function Page() {
       <DataTable
         columns={columns}
         data={payrolls}
+        isLoading={isFetching}
         renderToolbar={() => (
           <ListToolbar
             search={search}

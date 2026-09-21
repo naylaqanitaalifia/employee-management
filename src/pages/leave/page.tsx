@@ -22,7 +22,7 @@ export function Page() {
 
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
-  const { data: leaves = [], isLoading } = useLeaves(debouncedSearch);
+  const { data: leaves = [], isLoading, isFetching } = useLeaves(debouncedSearch);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -86,6 +86,7 @@ export function Page() {
       <DataTable
         columns={columns}
         data={leaves}
+        isLoading={isFetching}
         renderToolbar={() => (
           <ListToolbar
             search={search}
