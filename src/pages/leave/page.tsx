@@ -71,7 +71,7 @@ export function Page() {
   return (
     <div className="p-4 space-y-6 bg-background h-full">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
           Leave Management
         </h1>
         <p className="text-sm text-muted-foreground mt-1">

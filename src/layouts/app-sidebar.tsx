@@ -91,25 +91,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         // isActive: true,
       },
       {
-        title: "Playground",
-        url: "#",
-        icon: <TerminalSquareIcon />,
+        title: "Schedule",
+        url: "/schedule",
+        icon: <LayoutDashboard />,
         // isActive: true,
-        items: [
-          {
-            title: "History",
-            url: "#",
-          },
-          {
-            title: "Starred",
-            url: "#",
-          },
-          {
-            title: "Settings",
-            url: "#",
-          },
-        ],
       },
+      // {
+      //   title: "Playground",
+      //   url: "#",
+      //   icon: <TerminalSquareIcon />,
+      //   // isActive: true,
+      //   items: [
+      //     {
+      //       title: "History",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Starred",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Settings",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
       // {
       //   title: "Models",
       //   url: "#",
@@ -189,21 +195,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
     ],
     projects: [
-      {
-        name: "Design Engineering",
-        url: "#",
-        icon: <FrameIcon />,
-      },
-      {
-        name: "Sales & Marketing",
-        url: "#",
-        icon: <PieChartIcon />,
-      },
-      {
-        name: "Travel",
-        url: "#",
-        icon: <MapIcon />,
-      },
+      // {
+      //   name: "Design Engineering",
+      //   url: "#",
+      //   icon: <FrameIcon />,
+      // },
+      // {
+      //   name: "Sales & Marketing",
+      //   url: "#",
+      //   icon: <PieChartIcon />,
+      // },
+      // {
+      //   name: "Travel",
+      //   url: "#",
+      //   icon: <MapIcon />,
+      // },
     ],
   };
 
@@ -228,7 +234,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

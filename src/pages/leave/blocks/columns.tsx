@@ -131,7 +131,6 @@ export const getColumns = (
     size: 150,
     cell: ({ row }) => {
       const { user } = useAuth();
-      console.log(user);
       const isAdmin = user?.role === "ADMIN";
       const leave = row.original;
 

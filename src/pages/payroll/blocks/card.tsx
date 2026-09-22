@@ -55,8 +55,6 @@ export function PayrollCard() {
     );
   }
 
-  
-
   return (
     <Card>
       <CardHeader className="bg-primary/10">
@@ -86,14 +84,14 @@ export function PayrollCard() {
           </div>
         </div> */}
 
-        <div className="grid grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12">
           <div className="flex flex-col gap-4">
             <h3 className="font-bold text-center text-muted-foreground">
               Salary Breakdown
             </h3>
             <div className="flex flex-col gap-2">
               {/* Basic Salary */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <span className="text-sm">Basic Salary</span>
                 <span className="text-muted-foreground">
                   {formatRupiah(latestPayroll.basic_salary)}
@@ -127,10 +125,10 @@ export function PayrollCard() {
           </div>
 
           <div className="flex flex-col items-center justify-center gap-4 text-center">
-            <h3 className="font-bold text-muted-foreground">
+            <h3 className="text-sm sm:text-base font-bold text-muted-foreground">
               {format(latestPayroll.period_month, "MMMM yyyy")} • Net Salary
             </h3>
-            <span className="text-2xl font-bold">
+            <span className="text-xl sm:text-2xl font-bold">
               {formatRupiah(latestPayroll.net_salary)}
             </span>
             <span>

@@ -64,6 +64,14 @@ export function SidebarMenu() {
       activeIcon: PiCalendarCheckBold,
       path: "/attendance",
     },
+    {
+      id: "schedule",
+      label: "Schedule",
+      icon: PiCalendarCheck,
+      // activeIcon: PiCalendarCheckFill,
+      activeIcon: PiCalendarCheckBold,
+      path: "/schedule",
+    },
   ];
 
   return (

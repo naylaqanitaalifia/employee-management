@@ -82,37 +82,37 @@ export function AttendanceCard() {
       </CardHeader>
 
       <CardContent>
-        <div className="flex items-stretch justify-between">
-          <div className="flex flex-1 flex-col gap-4 max-w-2xl">
-            <div className="flex items-center justify-between border-b pb-4">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:justify-between">
+          <div className="flex min-w-0 flex-1 flex-col gap-4 lg:max-w-2xl">
+            <div className="grid grid-cols-2 gap-4 border-b pb-4 sm:grid-cols-4">
               <div className="flex flex-col gap-2">
-                <h4 className="font-bold text-muted-foreground">Clocked In</h4>
-                <span className="text-lg">08:02 AM</span>
+                <h4 className="text-xs sm:text-sm font-bold text-muted-foreground">Clocked In</h4>
+                <span className="text-base sm:text-lg">08:02 AM</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <h4 className="font-bold text-muted-foreground">Clocked Out</h4>
-                <span className="text-lg">--</span>
+                <h4 className="text-xs sm:text-sm font-bold text-muted-foreground">Clocked Out</h4>
+                <span className="text-base sm:text-lg">--</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <h4 className="font-bold text-muted-foreground">Duration</h4>
-                <span className="text-lg">5h 22m</span>
+                <h4 className="text-xs sm:text-sm font-bold text-muted-foreground">Duration</h4>
+                <span className="text-base sm:text-lg">5h 22m</span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <h4 className="font-bold text-muted-foreground">Status</h4>
+                <h4 className="text-xs sm:text-sm font-bold text-muted-foreground">Status</h4>
                 <Badge
                   variant={getStatusVariant(schedules[0]?.status ?? "") as any}
                   appearance="light"
-                  className="rounded-full"
+                  className="w-fit rounded-full"
                 >
                   {capitalize(schedules[0]?.status ?? "-")}
                 </Badge>
               </div>
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
               <div className="flex items-center gap-1 text-muted-foreground">
                 <MapPin size={14} />
                 <span className="text-xs">Office • Jakarta</span>
@@ -125,9 +125,9 @@ export function AttendanceCard() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-4 w-80">
+          <div className="flex w-full flex-col items-center justify-center gap-4 border-t pt-6 lg:w-64 lg:border-t-0 lg:pt-0 xl:w-80">
             <div className="flex flex-col items-center gap-1">
-              <h1 className="text-4xl font-semibold">
+              <h1 className="text-3xl sm:text-4xl font-semibold tabular-nums">
                 {format(time, "HH:mm:ss")}
               </h1>
               <span className="text-muted-foreground">Current Time</span>

@@ -11,6 +11,7 @@ const EmployeePage = lazyLayout(() => import("@/pages/employee"));
 const AttendancePage = lazyLayout(() => import("@/pages/attendance"));
 const LeavePage = lazyLayout(() => import("@/pages/leave"));
 const PayrollPage = lazyLayout(() => import("@/pages/payroll"));
+const SchedulePage = lazyLayout(() => import("@/pages/schedule"));
 
 export function AppRoutingSetup() {
   return (
@@ -26,6 +27,7 @@ export function AppRoutingSetup() {
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/schedule" element={<SchedulePage />} />
           </Route>
         </Route>
       </Route>

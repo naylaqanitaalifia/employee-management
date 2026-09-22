@@ -93,12 +93,12 @@ export function Page() {
         </p>
       </div>
 
-      <div className="">
+      <div className="w-full">
         <AttendanceCard />
       </div>
 
       {!isAdmin && (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent>
               <div className="flex flex-col gap-2">
@@ -161,11 +161,11 @@ export function Page() {
 
       <div className="grid grid-cols-12 gap-4">
         {isAdmin && (
-          <div className="flex flex-col gap-4 col-span-8">
-            <div className="grid grid-cols-3 gap-4">
+          <div className="flex flex-col gap-4 col-span-12 lg:col-span-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between">
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-muted-foreground">
                       Departments
                     </p>
@@ -179,7 +179,7 @@ export function Page() {
                     </p> */}
                   </div>
 
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                     <PiBuildingOffice className="size-5 text-primary" />
                   </div>
                 </div>
@@ -187,7 +187,7 @@ export function Page() {
 
               <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between">
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-muted-foreground">
                       Positions
                     </p>
@@ -201,7 +201,7 @@ export function Page() {
                     </p> */}
                   </div>
 
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                     <PiIdentificationBadge className="size-5 text-primary" />
                   </div>
                 </div>
@@ -209,7 +209,7 @@ export function Page() {
 
               <Card className="px-5 py-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between">
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-muted-foreground">
                       Employees
                     </p>
@@ -223,27 +223,27 @@ export function Page() {
                     </p> */}
                   </div>
 
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                     <PiUsers className="size-5 text-primary" />
                   </div>
                 </div>
               </Card>
             </div>
 
-            <div className="col-span-3">
+            <div className="w-full">
               <MonthlyAttendanceChart />
             </div>
           </div>
         )}
 
         {!isAdmin && (
-          <div className="flex flex-col gap-4 col-span-8">
+          <div className="flex flex-col gap-4 col-span-12 lg:col-span-8">
             <h3>Recent Requests</h3>
             <DataTable columns={leaveColumns} data={leaves} />
           </div>
         )}
 
-        <div className="flex flex-col gap-4 col-span-4">
+        <div className="flex flex-col gap-4 col-span-12 lg:col-span-4">
           <Card>
             <CardContent className="space-y-6">
               <WeeklyCalendar value={date} onChange={setDate} />
@@ -252,7 +252,7 @@ export function Page() {
                 <h4 className="text-base">Schedule</h4>
 
                 <div
-                  className={`${calendarClasses} overflow-y-scroll space-y-6`}
+                  className={`${calendarClasses} overflow-y-auto space-y-6`}
                 >
                   {[...schedules]
                     .sort((a, b) => a.time.localeCompare(b.time))

@@ -126,7 +126,7 @@ export function EditDialog({ open, onOpenChange, employee }: Props) {
 
   useEffect(() => {
     if (open && employee) {
-      console.log('employee', employee);
+      // console.log('employee', employee);
       form.reset({
         name: employee.name ?? "",
         email: employee.email ?? "",
