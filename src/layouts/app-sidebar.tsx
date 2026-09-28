@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { NavMain } from "@/layouts/components/nav-main";
-import { NavProjects } from "@/layouts/components/nav-projects";
 import { NavSecondary } from "@/layouts/components/nav-secondary";
 import { NavUser } from "@/layouts/components/nav-user";
 import {
@@ -16,12 +15,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-  TerminalSquareIcon,
   LifeBuoyIcon,
   SendIcon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
   TerminalIcon,
   LayoutDashboard,
   Building2,

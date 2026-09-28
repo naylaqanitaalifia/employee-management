@@ -66,11 +66,13 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  closeButtonClassname,
   variant,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> &
   VariantProps<typeof dialogContentVariants> & {
     showCloseButton?: boolean;
+    closeButtonClassname?: string;
     overlay?: boolean;
   }) {
   return (
@@ -86,7 +88,7 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
-              className="absolute top-4 right-4"
+              className={cn("absolute top-4 right-4", closeButtonClassname)}
               size="sm"
             >
               <XIcon />
@@ -103,7 +105,10 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col space-y-1 text-center sm:text-start mb-5", className)}
+      className={cn(
+        "flex flex-col space-y-1 text-center sm:text-start mb-5",
+        className,
+      )}
       {...props}
     />
   );
@@ -121,7 +126,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t bg-muted/50 p-4 sm:flex-row sm:justify-end",
+        "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl bg-muted/50 p-4 sm:flex-row sm:justify-end",
         className,
       )}
       {...props}

@@ -1,29 +1,7 @@
-import { useState } from "react";
-import { AddDialog } from "./blocks/add-dialog";
-import { EditDialog } from "./blocks/edit-dialog";
-import { DeleteDialog } from "./blocks/delete-dialog";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { apiConfig } from "@/config/api.config";
-import { DataTable } from "../../components/ui/data-table";
-import { getColumns, type Department } from "./blocks/columns";
-import { ListToolbar } from "./blocks/list-toolbar";
-import { useDebounce } from "use-debounce";
-import { ContentLoader } from "@/components/common/content-loader";
-import { ScheduleCalendar } from "@/components/ui/schedule/schedule-calendar";
+import { ScheduleCalendar } from "@/pages/schedule/components/schedule-calendar";
 // import ScheduleCalendar from "@/components/ui/schedule-calendar";
 
-const baseUrl = apiConfig.API_URL;
-
 export function Page() {
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] =
-    useState<Department | null>(null);
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
-
   // const {
   //   data: departments = [],
   //   isLoading,
@@ -50,20 +28,6 @@ export function Page() {
   //   placeholderData: (prev) => prev,
   // });
 
-  const handleReset = () => {
-    setSearch("");
-  };
-
-  const handleEdit = (department: Department) => {
-    setSelectedDepartment(department);
-    setEditDialogOpen(true);
-  };
-
-  const handleDelete = (department: Department) => {
-    setSelectedDepartment(department);
-    setDeleteDialogOpen(true);
-  };
-
   // const columns = getColumns(handleEdit, handleDelete);
 
   // if (isLoading) {
@@ -88,20 +52,6 @@ export function Page() {
       <ScheduleCalendar />
 
       {/* <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} /> */}
-
-      {/* <DataTable
-        columns={columns}
-        data={departments}
-        isLoading={isFetching}
-        renderToolbar={() => (
-          <ListToolbar
-            search={search}
-            onSearchChange={setSearch}
-            onReset={handleReset}
-            onAdd={() => setAddDialogOpen(true)}
-          />
-        )}
-      /> */}
 
       {/* EDIT DIALOG */}
       {/* <EditDialog

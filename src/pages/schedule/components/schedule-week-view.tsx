@@ -30,7 +30,7 @@ export function ScheduleWeekView({ currentDate }: ScheduleWeekViewProps) {
   });
 
   return (
-    <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg">
+    <div className="w-full max-h-[800px] overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg">
       <div className="grid grid-cols-[64px_repeat(7,minmax(0,1fr))] border-b border-gray-200 dark:border-gray-700">
         <div className="border-r border-gray-200 dark:border-gray-700" />
 
@@ -50,7 +50,7 @@ export function ScheduleWeekView({ currentDate }: ScheduleWeekViewProps) {
         ))}
       </div>
 
-      <div>
+      <div className="max-h-[530px] overflow-y-auto">
         {HOURS.map((hour) => (
           <div
             key={hour}

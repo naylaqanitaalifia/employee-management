@@ -1,7 +1,4 @@
-import {
-  type AxiosInstance,
-  type InternalAxiosRequestConfig,
-} from "axios";
+import { type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 
 // const api = axios.create({
 //   baseURL: apiConfig.API_URL,
@@ -41,5 +38,18 @@ export function setupAxios(axios: AxiosInstance) {
       return config;
     },
     async (err: unknown) => Promise.reject(err),
+  );
+
+  axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      if (error.response?.status === 401) {
+        localStorage.removeItem("access_token");
+
+        window.location.href = "/signin";
+      }
+
+      return Promise.reject(error);
+    },
   );
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PiCaretLeftBold, PiCaretRightBold, PiPlusBold } from "react-icons/pi";
@@ -9,6 +8,7 @@ interface ScheduleHeaderProps {
   setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
   view: CalendarView;
   setView: React.Dispatch<React.SetStateAction<CalendarView>>;
+  onAddDialogEvent: () => void;
 }
 
 const formatHeaderTitle = (date: Date, currentView: CalendarView) => {
@@ -55,6 +55,7 @@ export function ScheduleHeader({
   setCurrentDate,
   view,
   setView,
+  onAddDialogEvent,
 }: ScheduleHeaderProps) {
   function handlePrevious() {
     const newDate = new Date(currentDate);
@@ -133,15 +134,15 @@ export function ScheduleHeader({
           value={view}
           onValueChange={(value) => setView(value as CalendarView)}
         >
-          <TabsList defaultValue="month">
+          <TabsList>
             <TabsTrigger value="month">Month</TabsTrigger>
             <TabsTrigger value="week">Week</TabsTrigger>
-            <TabsTrigger value="day">Day</TabsTrigger>
-            <TabsTrigger value="list">List</TabsTrigger>
+            {/* <TabsTrigger value="day">Day</TabsTrigger>
+            <TabsTrigger value="list">List</TabsTrigger> */}
           </TabsList>
         </Tabs>
 
-        <Button variant="primary" type="button">
+        <Button variant="primary" type="button" onClick={onAddDialogEvent}>
           <PiPlusBold />
           New Event
         </Button>

@@ -6,6 +6,7 @@ import { apiConfig } from "@/config/api.config";
 
 export interface Employee {
   id: string;
+  photo: string;
   name: string;
   email: string;
   phone: string;
