@@ -17,6 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { apiConfig } from "@/config/api.config";
 
 interface Props {
   open: boolean;
@@ -34,6 +35,8 @@ function formatDate(input: Date | string | number): string {
     day: "numeric",
   });
 }
+
+const API_BASE_URL = apiConfig.API_URL.replace(/\/api\/?$/, "");
 
 export function DetailDialog({
   open,
@@ -88,18 +91,25 @@ export function DetailDialog({
               </p>
               <div className="flex items-center gap-3">
                 {event?.employees &&
-                  event?.employees.map((employee) => (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <img
-                          src={employee.photo}
-                          alt={employee.name}
-                          className="size-10 rounded-full obejct-cover cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>{employee.name}</TooltipContent>
-                    </Tooltip>
-                  ))}
+                  event?.employees.map((employee) => {
+                    const photoUrl = employee?.photo
+                      ? `${API_BASE_URL}${employee.photo}`
+                      : "/images/photo-profile.png";
+                    console.log("iniphotourl", photoUrl);
+
+                    return (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <img
+                            src={photoUrl}
+                            alt={employee.name}
+                            className="size-10 rounded-full object-cover cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>{employee.name}</TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
               </div>
             </div>
           )}

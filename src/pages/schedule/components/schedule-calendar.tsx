@@ -24,12 +24,7 @@ export function ScheduleCalendar() {
 
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
 
-  const {
-    data: schedules = [],
-    isLoading,
-    isFetching,
-    isError,
-  } = useQuery<CalendarEvent[]>({
+  const { data: schedules = [] } = useQuery<CalendarEvent[]>({
     queryKey: ["schedules", debouncedSearch],
     queryFn: async () => {
       const { data } = await axios.get(`${baseUrl}/schedules`, {
@@ -64,6 +59,7 @@ export function ScheduleCalendar() {
     },
     enabled: !!selectedEvent && detailDialogOpen, // request nggak akan jalan sebelum selectedEvent ada dan dialog dibuka
   });
+  console.log("inischeduledetail", scheduleDetail);
 
   function handleAddDialog() {
     setAddDialogOpen(true);
