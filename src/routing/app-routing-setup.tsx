@@ -4,6 +4,7 @@ import { lazyLayout, SuspenseOutlet } from "@/routing/routing-helpers";
 import { RequireAuth } from "@/auth/require-auth";
 
 const LoginPage = lazyLayout(() => import("@/pages/auth"));
+const ProfilePage = lazyLayout(() => import("@/pages/profile"));
 const DashboardPage = lazyLayout(() => import("@/pages/dashboard"));
 const DepartmentPage = lazyLayout(() => import("@/pages/department"));
 const PositionPage = lazyLayout(() => import("@/pages/position"));
@@ -21,6 +22,7 @@ export function AppRoutingSetup() {
         <Route element={<MainLayout />}>
           <Route element={<SuspenseOutlet />}>
             <Route path="/" element={<DashboardPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/department" element={<DepartmentPage />} />
             <Route path="/position" element={<PositionPage />} />
             <Route path="/employee" element={<EmployeePage />} />

@@ -9,6 +9,7 @@ export interface Employee {
   photo: string;
   name: string;
   email: string;
+  birth_date: Date;
   phone: string;
   department: Department;
   position: Position;
