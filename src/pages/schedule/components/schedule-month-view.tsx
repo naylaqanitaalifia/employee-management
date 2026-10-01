@@ -77,6 +77,7 @@ function CustomDayButton({
         "border-gray-200",
         "p-0",
         "align-top",
+        modifiers.today ? "bg-gray-50 dark:bg-gray-700/60" : "",
         "dark:border-gray-700",
       ].join(" ")}
     >

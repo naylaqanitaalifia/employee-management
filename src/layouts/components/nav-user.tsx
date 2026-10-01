@@ -61,8 +61,8 @@ export function NavUser() {
             align="end"
             sideOffset={4}
           >
-            <Link to="/profile">
-              <DropdownMenuLabel className="p-0 font-normal">
+            <DropdownMenuItem asChild className="p-0 font-normal">
+              <Link to="/profile" className="cursor-pointer">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
@@ -80,8 +80,8 @@ export function NavUser() {
                     </span>
                   </div>
                 </div>
-              </DropdownMenuLabel>
-            </Link>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>

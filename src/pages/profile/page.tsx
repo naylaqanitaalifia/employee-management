@@ -164,6 +164,30 @@ export function Page() {
     ? `${API_BASE_URL}${employee.photo}`
     : "/images/photo-profile.png";
 
+  const updatePassword = useMutation({
+    mutationFn: async (values: SchemaType) => {
+      await axios.patch(`${apiConfig.API_URL}/auth/update-password`, values);
+    },
+
+    onSuccess: async () => {
+      toast.success("Password updated successfully");
+      form.reset();
+    },
+
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error";
+        toast.error(message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    },
+  });
+
+  const onSubmit = (values: SchemaType) => {
+    updatePassword.mutate(values);
+  };
+
   if (isLoading) {
     return <ContentLoader />;
   }
@@ -276,13 +300,13 @@ export function Page() {
 
         <TabsContent value="employment">
           <div className="grid grid-cols-2 gap-6 pt-3 px-2">
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5 text-muted-foreground">
                 <PiEnvelopeSimpleBold />
                 <span className="text-sm">Employee ID</span>
               </div>
               <p className="text-sm">{employee?.email ?? "-"}</p>
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -308,13 +332,13 @@ export function Page() {
               <p className="text-sm">{employee?.position?.name ?? "-"}</p>
             </div>
 
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5 text-muted-foreground">
                 <PiFileTextBold />
                 <span className="text-sm">Reporting Manager</span>
               </div>
               <p className="text-sm">{employee?.position?.name ?? "-"}</p>
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -328,8 +352,7 @@ export function Page() {
 
         <TabsContent value="security">
           <Form {...form}>
-            {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> */}
-            <form className="space-y-4 pt-3 px-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="current_password"
@@ -337,7 +360,7 @@ export function Page() {
                   <FormItem>
                     <FormLabel>Current Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter current password" {...field} />
+                      <Input type="password" placeholder="Enter current password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -351,7 +374,7 @@ export function Page() {
                   <FormItem>
                     <FormLabel>New Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter new password" {...field} />
+                      <Input type="password" placeholder="Enter new password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -365,7 +388,7 @@ export function Page() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter confirm password" {...field} />
+                      <Input type="password" placeholder="Enter confirm password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -377,10 +400,9 @@ export function Page() {
                   type="submit"
                   variant="primary"
                   className="w-34"
-                  // disabled={create.isPending}
+                  disabled={updatePassword.isPending}
                 >
-                  {/* {create.isPending ? "Saving..." : "Save"} */}
-                  Update Password
+                  {updatePassword.isPending ? "Saving..." : "Update Password"}
                 </Button>
               </div>
             </form>
