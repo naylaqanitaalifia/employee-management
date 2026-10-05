@@ -1,42 +1,42 @@
+import { apiConfig } from "@/config/api.config";
 import { ScheduleCalendar } from "@/pages/schedule/components/schedule-calendar";
-// import ScheduleCalendar from "@/components/ui/schedule-calendar";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useState } from "react";
+import { useDebounce } from "use-debounce";
+import type { CalendarEvent } from "./components/schedule-types";
+import { ContentLoader } from "@/components/common/content-loader";
+
+const baseUrl = apiConfig.API_URL;
 
 export function Page() {
-  // const {
-  //   data: departments = [],
-  //   isLoading,
-  //   isFetching,
-  //   isError,
-  // } = useQuery<Department[]>({
-  //   queryKey: ["departments", debouncedSearch],
-  //   queryFn: async () => {
-  //     const { data } = await axios.get(`${baseUrl}/departments`, {
-  //       params: {
-  //         page: 1,
-  //         limit: 100,
-  //         with_deleted: false,
-  //         order_field: "created_at",
-  //         order_direction: "DESC",
-  //         filter: debouncedSearch
-  //           ? JSON.stringify({ name: debouncedSearch })
-  //           : "",
-  //       },
-  //     });
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
 
-  //     return data.data.list;
-  //   },
-  //   placeholderData: (prev) => prev,
-  // });
+  const { data: schedules = [], isLoading } = useQuery<CalendarEvent[]>({
+    queryKey: ["schedules", debouncedSearch],
+    queryFn: async () => {
+      const { data } = await axios.get(`${baseUrl}/schedules`, {
+        params: {
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ title: debouncedSearch })
+            : "",
+        },
+      });
 
-  // const columns = getColumns(handleEdit, handleDelete);
+      return data.data.list;
+    },
+    placeholderData: (prev) => prev,
+  });
 
-  // if (isLoading) {
-  //   return <ContentLoader />;
-  // }
-
-  // if (isError) {
-  //   return <div className="">Failed to load departments.</div>;
-  // }
+  if (isLoading) {
+    return <ContentLoader />;
+  }
 
   return (
     <div className="p-4 space-y-6 bg-background h-full">
@@ -49,23 +49,7 @@ export function Page() {
         </p>
       </div>
 
-      <ScheduleCalendar />
-
-      {/* <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} /> */}
-
-      {/* EDIT DIALOG */}
-      {/* <EditDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        department={selectedDepartment}
-      /> */}
-
-      {/* DELETE DIALOG */}
-      {/* <DeleteDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        department={selectedDepartment}
-      /> */}
+      <ScheduleCalendar schedules={schedules} />
     </div>
   );
 }

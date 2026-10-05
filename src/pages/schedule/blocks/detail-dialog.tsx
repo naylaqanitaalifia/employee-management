@@ -9,7 +9,14 @@ import {
   EVENT_COLORS,
   type CalendarEvent,
 } from "@/pages/schedule/components/schedule-types";
-import { PiClockBold, PiMapPinBold } from "react-icons/pi";
+import {
+  PiClockBold,
+  PiMapPinBold,
+  PiPencilSimple,
+  PiPencilSimpleBold,
+  PiTrash,
+  PiTrashBold,
+} from "react-icons/pi";
 import { Separator } from "@/components/ui/separator";
 import { isSameDay } from "date-fns";
 import {
@@ -19,6 +26,7 @@ import {
 } from "@/components/ui/tooltip";
 import { apiConfig } from "@/config/api.config";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   open: boolean;
@@ -44,8 +52,8 @@ export function DetailDialog({
   open,
   onOpenChange,
   event,
-  // onEdit,
-  // onDelete,
+  onEdit,
+  onDelete,
   isLoading,
   isRefreshing,
 }: Props) {
@@ -56,11 +64,44 @@ export function DetailDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-150 gap-0 overflow-hidden p-0"
+        className="max-w-150 gap-0 p-0"
         closeButtonClassname="text-white hover:bg-white/10 hover:text-white"
       >
-        <DialogHeader className={`text-white gap-4 p-6 mb-0 ${colors.header}`}>
-          <DialogTitle className="text-sm">Schedule Details</DialogTitle>
+        <DialogHeader
+          className={`relative text-white gap-4 p-6 mb-0 ${colors.header} sm:rounded-t-lg`}
+        >
+          <div className="flex items-center justify-between pr-8">
+            <DialogTitle className="text-sm">Schedule Details</DialogTitle>
+
+            <div className="absolute top-4 right-12 flex items-center gap-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 hover:bg-white/10 hover:text-white"
+                    onClick={() => event && onEdit?.(event)}
+                  >
+                    <PiPencilSimple size={16} className="text-white" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit event</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 hover:bg-white/10 hover:text-white"
+                    onClick={() => event && onDelete?.(event)}
+                  >
+                    <PiTrash size={16} className="text-white" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete event</TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
 
           <div className="flex flex-col gap-1.5">
             <h3 className="text-lg">
@@ -167,20 +208,6 @@ export function DetailDialog({
             </p>
           </div>
         </DialogBody>
-
-        {/* <DialogFooter className="gap-2 p-6">
-          <Button variant="outline" onClick={() => event && onEdit?.(event)}>
-            <PiPencilSimple className="mr-1" />
-            Edit
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={() => event && onDelete?.(event)}
-          >
-            <PiTrash className="mr-1" />
-            Delete
-          </Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

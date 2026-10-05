@@ -158,7 +158,7 @@ export function LoginPage() {
         </div>
 
         <div className="w-1/3 max-w-md mx-auto flex flex-col gap-12 p-12">
-          <div className="flex flex-col gap-3 text-center">
+          <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold">Sign In Account</h1>
             <span className="text-sm text-muted-foreground">
               Enter your personal data to sign in to your account.

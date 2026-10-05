@@ -5,14 +5,20 @@ import type { CalendarEvent, CalendarView } from "./schedule-types";
 import { ScheduleWeekView } from "./schedule-week-view";
 import { AddDialog } from "@/pages/schedule/blocks/add-dialog";
 import { DetailDialog } from "@/pages/schedule/blocks/detail-dialog";
+import { EditDialog } from "@/pages/schedule/blocks/edit-dialog";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { apiConfig } from "@/config/api.config";
+import { DeleteDialog } from "../blocks/delete-dialog";
 
 const baseUrl = apiConfig.API_URL;
 
-export function ScheduleCalendar() {
+interface ScheduleCalendarProps {
+  schedules: CalendarEvent[];
+}
+
+export function ScheduleCalendar({ schedules }: ScheduleCalendarProps) {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
 
@@ -20,30 +26,11 @@ export function ScheduleCalendar() {
   const [view, setView] = useState<CalendarView>("month");
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
-
-  const { data: schedules = [] } = useQuery<CalendarEvent[]>({
-    queryKey: ["schedules", debouncedSearch],
-    queryFn: async () => {
-      const { data } = await axios.get(`${baseUrl}/schedules`, {
-        params: {
-          page: 1,
-          limit: 100,
-          with_deleted: false,
-          order_field: "created_at",
-          order_direction: "DESC",
-          filter: debouncedSearch
-            ? JSON.stringify({ title: debouncedSearch })
-            : "",
-        },
-      });
-
-      return data.data.list;
-    },
-    placeholderData: (prev) => prev,
-  });
 
   const {
     data: scheduleDetail,
@@ -70,6 +57,16 @@ export function ScheduleCalendar() {
     setDetailDialogOpen(true);
   }
 
+  function handleEditDialog() {
+    setDetailDialogOpen(false);
+    setEditDialogOpen(true);
+  }
+
+  function handleDeleteDialog() {
+    setDetailDialogOpen(false);
+    setDeleteDialogOpen(true);
+  }
+
   return (
     <div className="w-full">
       <ScheduleHeader
@@ -91,9 +88,23 @@ export function ScheduleCalendar() {
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
+      <EditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        events={scheduleDetail ?? null}
+      />
+
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        event={scheduleDetail ?? null}
+      />
+
       <DetailDialog
         open={detailDialogOpen}
         onOpenChange={setDetailDialogOpen}
+        onEdit={handleEditDialog}
+        onDelete={handleDeleteDialog}
         event={scheduleDetail ?? null}
         isLoading={isLoadingDetail}
       />

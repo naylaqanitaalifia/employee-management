@@ -8,22 +8,22 @@ import { PiWarning } from "react-icons/pi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConfig } from "@/config/api.config";
 import axios from "axios";
-import type { Department } from "./columns";
 import { toast } from "sonner";
+import type { CalendarEvent } from "../components/schedule-types";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  department: Department | null;
+  event: CalendarEvent | null;
 }
 
-export function DeleteDialog({ open, onOpenChange, department }: Props) {
+export function DeleteDialog({ open, onOpenChange, event }: Props) {
   const queryClient = useQueryClient();
 
   const remove = useMutation({
     mutationFn: async () => {
       const { data } = await axios.delete(
-        `${apiConfig.API_URL}/departments/${department?.id}`,
+        `${apiConfig.API_URL}/schedules/${event?.id}`,
       );
 
       return data;
@@ -31,10 +31,10 @@ export function DeleteDialog({ open, onOpenChange, department }: Props) {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["departments"],
+        queryKey: ["schedules"],
       });
 
-      toast.success("Department deleted successfully");
+      toast.success("Schedule deleted successfully");
 
       onOpenChange(false);
     },
