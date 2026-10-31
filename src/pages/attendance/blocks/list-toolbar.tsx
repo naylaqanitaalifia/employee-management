@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { Input } from "@/components/ui/input";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import {
@@ -6,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { DateRange } from "react-day-picker";
 import { PiArrowsClockwise } from "react-icons/pi";
 
 interface ListToolbarProps {
@@ -13,6 +15,8 @@ interface ListToolbarProps {
   onSearchChange: (value: string) => void;
   status: string;
   onStatusChange: (value: string) => void;
+  dateRange: DateRange | undefined;
+  onDateRangeChange: (value: DateRange | undefined) => void;
   onReset: () => void;
   onAdd: () => void;
 }
@@ -28,6 +32,8 @@ const ListToolbar = ({
   onSearchChange,
   status,
   onStatusChange,
+  dateRange,
+  onDateRangeChange,
   onReset,
   // onAdd,
 }: ListToolbarProps) => {
@@ -40,6 +46,9 @@ const ListToolbar = ({
           onChange={(e) => onSearchChange(e.target.value)}
           className="flex-[2] min-w-0"
         />
+
+        <DateRangePicker value={dateRange} onChange={onDateRangeChange} className="flex-1 min-w-0" />
+
         <SearchableSelect
           options={statuses}
           value={status}
@@ -47,6 +56,7 @@ const ListToolbar = ({
           placeholder="All Status"
           searchPlaceholder="Search status..."
           emptyMessage="No status found."
+          className="flex-1 min-w-0"
         />
         <Tooltip>
           <TooltipTrigger asChild>

@@ -9,17 +9,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { PiCalendarDots } from "react-icons/pi";
+import { cn } from "@/lib/utils";
 
 interface DateRangePickerProps {
   value?: DateRange;
   onChange: (date: DateRange | undefined) => void;
   disabled?: boolean;
+  className?: string;
 }
 
 export function DateRangePicker({
   value,
   onChange,
   disabled,
+  className,
 }: DateRangePickerProps) {
   // const [date, setDate] = useState<DateRange | undefined>({
   //   from: new Date(new Date().getFullYear(), 0, 20),
@@ -33,7 +36,7 @@ export function DateRangePicker({
           type="button"
           variant="outline"
           disabled={disabled}
-          className="justify-between px-2.5 font-normal"
+          className={cn("justify-between px-2.5 font-normal", className)}
         >
           {value?.from ? (
             value.to ? (

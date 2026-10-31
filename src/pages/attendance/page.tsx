@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiConfig } from "@/config/api.config";
 import { useDebounce } from "use-debounce";
+import type { DateRange } from "react-day-picker";
+import { format, setDate } from "date-fns";
 
 export function Page() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -19,9 +21,16 @@ export function Page() {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
   const [status, setStatus] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   const { data: attendances = [], isLoading } = useQuery({
-    queryKey: ["attendances", debouncedSearch, status],
+    queryKey: [
+      "attendances",
+      debouncedSearch,
+      status,
+      dateRange?.from,
+      dateRange?.to,
+    ],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/attendances`, {
         params: {
@@ -31,8 +40,17 @@ export function Page() {
           order_field: "created_at",
           order_direction: "DESC",
           filter:
-            debouncedSearch || status
-              ? JSON.stringify({ name: debouncedSearch, status: status })
+            debouncedSearch || status || dateRange?.from || dateRange?.to
+              ? JSON.stringify({
+                  name: debouncedSearch,
+                  status: status,
+                  start_date: dateRange?.from
+                    ? format(dateRange?.from, "yyyy-MM-dd")
+                    : "",
+                  end_date: dateRange?.to
+                    ? format(dateRange?.to, "yyyy-MM-dd")
+                    : "",
+                })
               : "",
         },
       });
@@ -42,6 +60,7 @@ export function Page() {
 
   const handleReset = () => {
     setSearch("");
+    setDateRange(undefined);
     setStatus("");
   };
 
@@ -83,6 +102,8 @@ export function Page() {
             onSearchChange={setSearch}
             status={status}
             onStatusChange={setStatus}
+            dateRange={dateRange}
+            onDateRangeChange={setDateRange}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />

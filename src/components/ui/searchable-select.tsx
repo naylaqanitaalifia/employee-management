@@ -29,6 +29,7 @@ interface SearchableSelectProps {
   searchPlaceholder?: string;
   emptyMessage?: string;
   width?: string;
+  className?: string;
 }
 
 const SearchableSelect = ({
@@ -39,6 +40,7 @@ const SearchableSelect = ({
   searchPlaceholder = "Search...",
   emptyMessage = "No data found.",
   width = "w-[320px]",
+  className,
 }: SearchableSelectProps) => {
   const [open, setOpen] = useState(false);
 
@@ -55,7 +57,7 @@ const SearchableSelect = ({
         <Button
           type="button"
           variant="outline"
-          className="flex-1 min-w-0 justify-between"
+          className={cn("flex-1 min-w-0 justify-between", className)}
         >
           <span className="truncate">
             {selectedOption?.name || placeholder}
