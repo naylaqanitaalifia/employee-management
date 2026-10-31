@@ -78,7 +78,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         const message =
-          error.response?.data?.message || "Login failed. Please try again.";
+          error.response?.data?.message || error.response?.data?.error || "Login failed. Please try again.";
 
         toast.error(message);
       } else {
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   });
 
   const login = async (email: string, password: string) => {
-    await loginMutation.mutateAsync({ email, password });
+    await loginMutation.mutate({ email, password });
   };
 
   const logout = () => {

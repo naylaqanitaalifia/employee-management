@@ -21,6 +21,7 @@ export function Page() {
   );
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
+  const [departmentId, setDepartmentId] = useState("");
 
   const {
     data: positions = [],
@@ -28,7 +29,7 @@ export function Page() {
     isFetching,
     isError,
   } = useQuery<Position[]>({
-    queryKey: ["positions", debouncedSearch],
+    queryKey: ["positions", debouncedSearch, departmentId],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/positions`, {
         params: {
@@ -37,12 +38,16 @@ export function Page() {
           with_deleted: false,
           order_field: "created_at",
           order_direction: "DESC",
-          filter: debouncedSearch
-            ? JSON.stringify({ search: debouncedSearch })
-            : "",
+          filter:
+            debouncedSearch || departmentId
+              ? JSON.stringify({
+                  name: debouncedSearch,
+                  department_id: departmentId,
+                })
+              : "",
         },
       });
-      
+
       return data.data.list;
     },
     placeholderData: (prev) => prev,
@@ -50,6 +55,7 @@ export function Page() {
 
   const handleReset = () => {
     setSearch("");
+    setDepartmentId("");
   };
 
   const handleEdit = (position: Position) => {
@@ -93,6 +99,8 @@ export function Page() {
           <ListToolbar
             search={search}
             onSearchChange={setSearch}
+            departmentId={departmentId}
+            onDepartmentChange={setDepartmentId}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />

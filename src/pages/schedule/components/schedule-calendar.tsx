@@ -20,7 +20,7 @@ interface ScheduleCalendarProps {
 
 export function ScheduleCalendar({ schedules }: ScheduleCalendarProps) {
   const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
+  // const [debouncedSearch] = useDebounce(search, 500);
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<CalendarView>("month");

@@ -13,9 +13,7 @@ import {
   PiClockBold,
   PiMapPinBold,
   PiPencilSimple,
-  PiPencilSimpleBold,
   PiTrash,
-  PiTrashBold,
 } from "react-icons/pi";
 import { Separator } from "@/components/ui/separator";
 import { isSameDay } from "date-fns";

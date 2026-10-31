@@ -1,47 +1,50 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import profile from "@/assets/images/profile.jpeg";
 import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
 
 export type Attendance = {
   id: string;
-  name: string;
+  employee: {
+    id: string;
+    name: string;
+    photo: string;
+  };
+  attendance_date: string;
+  clock_in: string;
+  clock_out: null;
+  status: string;
   created_at: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  position: {
-    id: string;
-    name: string;
-  };
+  updated_at: string;
 };
 
-export const getColumns = (
-  // onEdit: (attendance: any) => void,
-  // onDelete: (attendance: any) => void,
-): ColumnDef<any>[] => [
+export const getColumns = () // onEdit: (attendance: any) => void,
+// onDelete: (attendance: any) => void,
+: ColumnDef<Attendance>[] => [
   {
-    accessorKey: "date",
+    accessorKey: "attendance_date",
     header: "Date",
     size: 100,
+    cell: ({ row }) => {
+      return format(row.original.attendance_date, "MMM dd, yyyy");
+    },
   },
   {
-    accessorKey: "name",
+    accessorKey: "employee",
     header: "Fullname",
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">
           <img
-            src={profile}
+            src={row.original.employee.photo}
             alt="Profile Image"
             className="w-12 h-12 rounded-full object-cover"
           />
           <div className="flex flex-col gap-1">
             <span className="font-semibold text-black">
-              {row.original.name}
+              {row.original.employee.name}
             </span>
             <span className="text-xs font-light text-muted-foreground">
-              {row.original.department}
+              {/* {row.original.department} */}
             </span>
           </div>
         </div>
@@ -51,10 +54,20 @@ export const getColumns = (
   {
     accessorKey: "clock_in",
     header: "Clock In",
+    cell: ({ row }) => {
+      return row.original.clock_in
+        ? format(row.original.clock_in, "dd MMM yyyy HH:mm")
+        : "-";
+    },
   },
   {
     accessorKey: "clock_out",
     header: "Clock Out",
+    cell: ({ row }) => {
+      return row.original.clock_out
+        ? format(row.original.clock_out, "dd MMM yyyy HH:mm")
+        : "-";
+    },
   },
   {
     accessorKey: "total_hours",

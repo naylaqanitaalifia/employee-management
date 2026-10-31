@@ -158,10 +158,11 @@ export function Page() {
     },
   });
 
-  const API_BASE_URL = apiConfig.API_URL.replace(/\/api\/?$/, "");
-
+  // const photoUrl = employee?.photo
+  //   ? `${API_BASE_URL}${employee.photo}`
+  //   : "/images/photo-profile.png";
   const photoUrl = employee?.photo
-    ? `${API_BASE_URL}${employee.photo}`
+    ? employee.photo
     : "/images/photo-profile.png";
 
   const updatePassword = useMutation({
@@ -360,7 +361,11 @@ export function Page() {
                   <FormItem>
                     <FormLabel>Current Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter current password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Enter current password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -374,7 +379,11 @@ export function Page() {
                   <FormItem>
                     <FormLabel>New Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter new password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Enter new password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -388,7 +397,11 @@ export function Page() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter confirm password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Enter confirm password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

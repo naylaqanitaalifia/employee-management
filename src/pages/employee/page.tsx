@@ -47,7 +47,7 @@ export function Page() {
     placeholderData: (prev) => prev,
   });
 
-  const { data: employeeDetail, isLoading: isLoadingEmployeeDetail } = useQuery(
+  const { data: employeeDetail } = useQuery(
     {
       queryKey: ["employees", selectedEmployee?.id],
       queryFn: async () => {

@@ -4,9 +4,12 @@ import { DataTable } from "@/components/ui/data-table";
 import { ListToolbar } from "./blocks/list-toolbar";
 import { getColumns } from "./blocks/columns";
 import { ContentLoader } from "@/components/common/content-loader";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { apiConfig } from "@/config/api.config";
+import { useDebounce } from "use-debounce";
 
 export function Page() {
-  const [isLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   // const [editDialogOpen, setEditDialogOpen] = useState(false);
   // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -14,35 +17,29 @@ export function Page() {
   //   null,
   // );
   const [search, setSearch] = useState("");
-  // const [debouncedSearch] = useDebounce(search, 500);
+  const [debouncedSearch] = useDebounce(search, 500);
 
-  const attendances = [
-    {
-      date: "2023-09-01",
-      name: "John Doe",
-      department: "Information Technology",
-      clock_in: "09:00",
-      clock_out: "18:00",
-      total_hours: "8h",
-      status: "absent",
+  const {
+    data: attendances = [],
+    isLoading,
+  } = useQuery({
+    queryKey: ["attendances", debouncedSearch],
+    queryFn: async () => {
+      const { data } = await axios.get(`${apiConfig.API_URL}/attendances`, {
+        params: {
+          page: 1,
+          limit: 100,
+          // with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter: debouncedSearch
+            ? JSON.stringify({ name: debouncedSearch })
+            : "",
+        },
+      });
+      return data.data.list;
     },
-  ];
-
-  // const {
-  //   data: employees = [],
-  //   isLoading,
-  //   isError,
-  // } = useQuery({
-  //   queryKey: ["employees", debouncedSearch],
-  //   queryFn: async () => {
-  //     const { data } = await axios.get(`${apiConfig.API_URL}/employees`, {
-  //       params: {
-  //         search: debouncedSearch,
-  //       },
-  //     });
-  //     return data.data;
-  //   },
-  // });
+  });
 
   const handleReset = () => {
     setSearch("");

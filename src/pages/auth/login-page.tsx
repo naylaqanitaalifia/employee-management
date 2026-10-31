@@ -1,11 +1,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  LoaderCircleIcon,
-} from "lucide-react";
+import { Eye, EyeOff, LoaderCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 // import { useNavigate, useSearchParams } from 'react-router-dom';
 // import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -138,10 +134,18 @@ export function LoginPage() {
   //   }
 
   const onSubmit = async (values: SchemaType) => {
+    setIsProcessing(true);
+
     try {
-      setIsProcessing(true);
+      // if (!values.email.trim() || !values.password) {
+      //   toast.error("Email and password must be filled.");
+      //   return;
+      // }
+
       await login(values.email, values.password);
     } catch (error) {
+      console.error("Login error:", error);
+    } finally {
       setIsProcessing(false);
     }
   };
@@ -151,7 +155,7 @@ export function LoginPage() {
       <div className="w-full h-full flex items-center">
         <div className="w-2/3 h-full max-h-[800px] overflow-hidden rounded-xl">
           <img
-            src={toAbsoluteUrl("/images/signin.png")}
+            src={toAbsoluteUrl("/images/signin.jpg")}
             alt="Employees working together"
             className="w-full h-full object-cover"
           />
@@ -202,10 +206,14 @@ export function LoginPage() {
                     </FormLabel>
 
                     <FormControl>
-                      <Input placeholder="Enter email" {...field} />
+                      <Input
+                        placeholder="Enter email"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
 
-                    <FormMessage className="text-red-200" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -248,7 +256,7 @@ export function LoginPage() {
                       </Button>
                     </div>
 
-                    <FormMessage className="text-red-200" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />

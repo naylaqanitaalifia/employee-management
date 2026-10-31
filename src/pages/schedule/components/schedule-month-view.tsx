@@ -68,7 +68,7 @@ function CustomDayButton({
   day,
   modifiers,
   onEventClick,
-  onShowMore,
+  // onShowMore,
   allEvents,
 }: DayProps & {
   onEventClick(event: CalendarEvent, date: Date): void;
