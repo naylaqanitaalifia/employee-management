@@ -58,6 +58,7 @@ const ListToolbar = ({
           emptyMessage="No status found."
           className="flex-1 min-w-0"
         />
+        
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="outline" size="icon" onClick={onReset}>

@@ -13,13 +13,19 @@ import { getColumns } from "./blocks/columns";
 import { usePayrolls, type Payroll } from "@/hooks/use-payrolls";
 import { ContentLoader } from "@/components/common/content-loader";
 import { useAuth } from "@/auth/auth-context";
+import { apiConfig } from "@/config/api.config";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 export function Page() {
   const { user } = useAuth();
   const isAdmin = user?.role === "ADMIN";
 
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
+  // const {
+  //   data: payrolls = [],
+  //   isLoading,
+  //   isFetching,
+  // } = usePayrolls(debouncedSearch);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   // const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -32,14 +38,42 @@ export function Page() {
     "process",
   );
 
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+  const [status, setStatus] = useState("");
+
   const {
     data: payrolls = [],
     isLoading,
-    isFetching
-  } = usePayrolls(debouncedSearch);
+    isFetching,
+  } = useQuery<Payroll[]>({
+    queryKey: ["payrolls", debouncedSearch, status],
+    queryFn: async () => {
+      const { data } = await axios.get(`${apiConfig.API_URL}/payrolls`, {
+        params: {
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter:
+            debouncedSearch || status
+              ? JSON.stringify({
+                  name: debouncedSearch,
+                  status: status,
+                })
+              : "",
+        },
+      });
+
+      return data.data.list;
+    },
+    placeholderData: (prev) => prev,
+  });
 
   const handleReset = () => {
     setSearch("");
+    setStatus("");
   };
 
   // const handleDetail = (payroll: Payroll) => {
@@ -107,6 +141,8 @@ export function Page() {
           <ListToolbar
             search={search}
             onSearchChange={setSearch}
+            status={status}
+            onStatusChange={setStatus}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />

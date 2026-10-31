@@ -15,14 +15,19 @@ import { getColumns } from "./blocks/columns";
 import { useLeaves, type Leave } from "@/hooks/use-leaves";
 import { ContentLoader } from "@/components/common/content-loader";
 import { useAuth } from "@/auth/auth-context";
+import { useQuery } from "@tanstack/react-query";
+import { apiConfig } from "@/config/api.config";
+import axios from "axios";
 
 export function Page() {
   const { user } = useAuth();
   const isAdmin = user?.role === "ADMIN";
 
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
-  const { data: leaves = [], isLoading, isFetching } = useLeaves(debouncedSearch);
+  // const {
+  //   data: leaves = [],
+  //   isLoading,
+  //   isFetching,
+  // } = useLeaves(debouncedSearch);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
@@ -31,8 +36,42 @@ export function Page() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<Leave | null>(null);
 
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+
+  const {
+    data: leaves = [],
+    isLoading,
+    isFetching,
+  } = useQuery<Leave[]>({
+    queryKey: ["leaves", debouncedSearch, status],
+    queryFn: async () => {
+      const { data } = await axios.get(`${apiConfig.API_URL}/leaves`, {
+        params: {
+          page: 1,
+          limit: 100,
+          with_deleted: false,
+          order_field: "created_at",
+          order_direction: "DESC",
+          filter:
+            debouncedSearch || status
+              ? JSON.stringify({
+                  name: debouncedSearch,
+                  status: status,
+                })
+              : "",
+        },
+      });
+
+      return data.data.list;
+    },
+    placeholderData: (prev) => prev,
+  });
+
   const handleReset = () => {
     setSearch("");
+    setStatus("");
   };
 
   const handleDetail = (leave: Leave) => {
@@ -91,6 +130,8 @@ export function Page() {
           <ListToolbar
             search={search}
             onSearchChange={setSearch}
+            status={status}
+            onStatusChange={setStatus}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />
