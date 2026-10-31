@@ -158,16 +158,16 @@ export function DetailDialog({
                 <div className="flex items-center gap-3">
                   {event?.employees &&
                     event?.employees.map((employee) => {
-                      const photoUrl = employee?.photo
-                        ? `${API_BASE_URL}${employee.photo}`
-                        : "/images/photo-profile.png";
-                      console.log("iniphotourl", photoUrl);
+                      // const photoUrl = employee?.photo
+                      //   ? `${API_BASE_URL}${employee.photo}`
+                      //   : "/images/photo-profile.png";
+                      // console.log("iniphotourl", photoUrl);
 
                       return (
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <img
-                              src={photoUrl}
+                              src={employee.photo}
                               alt={employee.name}
                               className="size-10 rounded-full object-cover cursor-pointer"
                             />
