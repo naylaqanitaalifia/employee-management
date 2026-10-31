@@ -18,12 +18,10 @@ export function Page() {
   // );
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
+  const [status, setStatus] = useState("");
 
-  const {
-    data: attendances = [],
-    isLoading,
-  } = useQuery({
-    queryKey: ["attendances", debouncedSearch],
+  const { data: attendances = [], isLoading } = useQuery({
+    queryKey: ["attendances", debouncedSearch, status],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/attendances`, {
         params: {
@@ -32,9 +30,10 @@ export function Page() {
           // with_deleted: false,
           order_field: "created_at",
           order_direction: "DESC",
-          filter: debouncedSearch
-            ? JSON.stringify({ name: debouncedSearch })
-            : "",
+          filter:
+            debouncedSearch || status
+              ? JSON.stringify({ name: debouncedSearch, status: status })
+              : "",
         },
       });
       return data.data.list;
@@ -43,6 +42,7 @@ export function Page() {
 
   const handleReset = () => {
     setSearch("");
+    setStatus("");
   };
 
   // const handleEdit = (employee: Employee) => {
@@ -81,6 +81,8 @@ export function Page() {
           <ListToolbar
             search={search}
             onSearchChange={setSearch}
+            status={status}
+            onStatusChange={setStatus}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />
