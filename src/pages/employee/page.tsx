@@ -19,8 +19,11 @@ export function Page() {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null,
   );
+
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
+  const [departmentId, setDepartmentId] = useState("");
+  const [positionId, setPositionId] = useState("");
 
   const {
     data: employees = [],
@@ -28,7 +31,7 @@ export function Page() {
     isFetching,
     isError,
   } = useQuery({
-    queryKey: ["employees", debouncedSearch],
+    queryKey: ["employees", debouncedSearch, departmentId, positionId],
     queryFn: async () => {
       const { data } = await axios.get(`${apiConfig.API_URL}/employees`, {
         params: {
@@ -37,9 +40,14 @@ export function Page() {
           with_deleted: false,
           order_field: "created_at",
           order_direction: "DESC",
-          filter: debouncedSearch
-            ? JSON.stringify({ name: debouncedSearch })
-            : "",
+          filter:
+            debouncedSearch || departmentId || positionId
+              ? JSON.stringify({
+                  name: debouncedSearch,
+                  department_id: departmentId,
+                  position_id: positionId,
+                })
+              : "",
         },
       });
       return data.data.list;
@@ -47,22 +55,22 @@ export function Page() {
     placeholderData: (prev) => prev,
   });
 
-  const { data: employeeDetail } = useQuery(
-    {
-      queryKey: ["employees", selectedEmployee?.id],
-      queryFn: async () => {
-        const { data } = await axios.get(
-          `${apiConfig.API_URL}/employees/${selectedEmployee?.id}`,
-        );
-        return data.data;
-      },
-      placeholderData: (prev) => prev,
-      enabled: editDialogOpen && !!selectedEmployee?.id,
+  const { data: employeeDetail } = useQuery({
+    queryKey: ["employees", selectedEmployee?.id],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `${apiConfig.API_URL}/employees/${selectedEmployee?.id}`,
+      );
+      return data.data;
     },
-  );
+    placeholderData: (prev) => prev,
+    enabled: editDialogOpen && !!selectedEmployee?.id,
+  });
 
   const handleReset = () => {
     setSearch("");
+    setDepartmentId("");
+    setPositionId("");
   };
 
   const handleEdit = (employee: Employee) => {
@@ -106,6 +114,10 @@ export function Page() {
           <ListToolbar
             search={search}
             onSearchChange={setSearch}
+            departmentId={departmentId}
+            onDepartmentChange={setDepartmentId}
+            positionId={positionId}
+            onPositionChange={setPositionId}
             onReset={handleReset}
             onAdd={() => setAddDialogOpen(true)}
           />

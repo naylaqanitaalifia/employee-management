@@ -64,7 +64,6 @@ const ListToolbar = ({
               type="button"
               variant="outline"
               className="flex-1 min-w-0 justify-between"
-              // placeholder={value}
             >
               {selectedDepartment?.name || "All Department"}
               <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
@@ -80,7 +79,7 @@ const ListToolbar = ({
                   {departments.map((department) => (
                     <CommandItem
                       key={department.id}
-                      value={department.id}
+                      value={department.name}
                       onSelect={() => {
                         onDepartmentChange(department.id);
                         setDepartmentPopoverOpen(false);
