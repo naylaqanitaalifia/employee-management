@@ -3,8 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Eye, EyeOff, LoaderCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-// import { useNavigate, useSearchParams } from 'react-router-dom';
-// import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,9 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { toAbsoluteUrl } from "@/lib/helpers";
 import { useAuth } from "@/auth/auth-context";
-// import { resolvePostLoginPath } from '@/auth/require-auth';
-// import { useAuth } from '../context/auth-context';
-// import { getSigninSchema, SigninSchemaType } from '../forms/signin-schema';
 
 const formSchema = z.object({
   email: z.string().trim().min(1, { message: "Email is required." }),
@@ -29,13 +24,9 @@ const formSchema = z.object({
 type SchemaType = z.infer<typeof formSchema>;
 
 export function LoginPage() {
-  //   const [searchParams] = useSearchParams();
   const { login } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  // const [error, setError] = useState<string | null>(null);
-  // const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  // const [redirectAfterLogin, setRedirectAfterLogin] = useState(false);
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(formSchema),
@@ -45,103 +36,10 @@ export function LoginPage() {
     },
   });
 
-  // Check for success message from password reset or error messages
-  //   useEffect(() => {
-  //     const pwdReset = searchParams.get('pwd_reset');
-  //     const errorParam = searchParams.get('error');
-  //     const errorDescription = searchParams.get('error_description');
-
-  //     if (pwdReset === 'success') {
-  //       setSuccessMessage(
-  //         'Your password has been successfully reset. You can now sign in with your new password.',
-  //       );
-  //     }
-
-  //     if (errorParam) {
-  //       switch (errorParam) {
-  //         case 'auth_callback_failed':
-  //           setError(
-  //             errorDescription || 'Authentication failed. Please try again.',
-  //           );
-  //           break;
-  //         case 'auth_callback_error':
-  //           setError(
-  //             errorDescription ||
-  //             'An error occurred during authentication. Please try again.',
-  //           );
-  //           break;
-  //         case 'auth_token_error':
-  //           setError(
-  //             errorDescription ||
-  //             'Failed to set authentication session. Please try again.',
-  //           );
-  //           break;
-  //         default:
-  //           setError(
-  //             errorDescription || 'Authentication error. Please try again.',
-  //           );
-  //           break;
-  //       }
-  //     }
-  //   }, [searchParams]);
-
-  //   useEffect(() => {
-  //     if (!redirectAfterLogin || accessibleMenus.loading) return;
-  //     if (accessibleMenus.menus.length === 0) return;
-
-  //     const targetPath = resolvePostLoginPath(
-  //       accessibleMenus.menus,
-  //       isAdmin,
-  //       auth?.default_page,
-  //     );
-  //     setRedirectAfterLogin(false);
-  //     navigate(targetPath, { replace: true });
-  //   }, [
-  //     redirectAfterLogin,
-  //     accessibleMenus.loading,
-  //     accessibleMenus.menus,
-  //     isAdmin,
-  //     auth?.default_page,
-  //     navigate,
-  //   ]);
-
-  //   async function onSubmit(values: SigninSchemaType) {
-  //     try {
-  //       setIsProcessing(true);
-  //       setError(null);
-
-  //       // console.log('Attempting to sign in with username:', values.username);
-
-  //       // Simple validation
-  //       if (!values.username.trim() || !values.password) {
-  //         setError('Username and password must be filled');
-  //         return;
-  //       }
-
-  //       await login(values.username, values.password);
-  //       setRedirectAfterLogin(true);
-
-  //     } catch (err) {
-  //       console.error('Unexpected sign-in error:', err);
-  //       setError(
-  //         err instanceof AxiosError
-  //           ? err.response?.data?.error ?? err.response?.data?.message
-  //           : 'An unexpected error occurred. Please try again.',
-  //       );
-  //     } finally {
-  //       setIsProcessing(false);
-  //     }
-  //   }
-
   const onSubmit = async (values: SchemaType) => {
     setIsProcessing(true);
 
     try {
-      // if (!values.email.trim() || !values.password) {
-      //   toast.error("Email and password must be filled.");
-      //   return;
-      // }
-
       await login(values.email, values.password);
     } catch (error) {
       console.error("Login error:", error);
@@ -174,28 +72,6 @@ export function LoginPage() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="block w-full space-y-5"
             >
-              {/* {error && (
-          <Alert
-            variant="destructive"
-            appearance="light"
-            onClose={() => setError(null)}
-          >
-            <AlertIcon>
-              <AlertCircle />
-            </AlertIcon>
-            <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        )} */}
-
-              {/* {successMessage && (
-          <Alert appearance="light" onClose={() => setSuccessMessage(null)}>
-            <AlertIcon>
-              <Check />
-            </AlertIcon>
-            <AlertTitle>{successMessage}</AlertTitle>
-          </Alert>
-        )} */}
-
               <FormField
                 control={form.control}
                 name="email"
@@ -233,11 +109,6 @@ export function LoginPage() {
                       <Input
                         placeholder="Your password"
                         type={passwordVisible ? "text" : "password"}
-                        // className={`bg-white/80 border-white/30 text-slate-900 placeholder:text-slate-500 ${
-                        //   form.formState.errors.password
-                        //     ? "border-red-400"
-                        //     : ""
-                        // }`}
                         {...field}
                       />
 
@@ -260,23 +131,6 @@ export function LoginPage() {
                   </FormItem>
                 )}
               />
-
-              {/* <FormField
-          control={form.control}
-          name="rememberMe"
-          render={() => (
-            <FormItem className="flex flex-col space-y-2">
-              <div className="flex items-center justify-end">
-                <Link
-                  to="/auth/reset-password"
-                  className="text-sm font-semibold text-foreground hover:text-primary"
-                >
-                  Forgot Password?
-                </Link>
-              </div>
-            </FormItem>
-          )}
-        /> */}
 
               <Button
                 type="submit"

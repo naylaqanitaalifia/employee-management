@@ -80,20 +80,20 @@ export const getColumns = (
       );
     },
   },
-  {
-    accessorKey: "created_at",
-    header: "Created",
-    size: 100,
-    cell: ({ row }) => {
-      return (
-        <div className="flex flex-col">
-          {row.original.created_at
-            ? format(new Date(row.original.created_at), "MMM dd, yyyy")
-            : "-"}
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "created_at",
+  //   header: "Created",
+  //   size: 100,
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex flex-col">
+  //         {row.original.created_at
+  //           ? format(new Date(row.original.created_at), "MMM dd, yyyy")
+  //           : "-"}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,

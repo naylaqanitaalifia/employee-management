@@ -24,6 +24,7 @@ import { useDepartments } from "@/hooks/use-departments";
 import { usePositions } from "@/hooks/use-positions";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 
 interface ListToolbarProps {
   search: string;
@@ -64,102 +65,22 @@ const ListToolbar = ({
           onChange={(e) => onSearchChange(e.target.value)}
           className="max-w-sm"
         />
-        <Popover
-          open={departmentPopoverOpen}
-          onOpenChange={setDepartmentPopoverOpen}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1 min-w-0 justify-between"
-            >
-              {selectedDepartment?.name || "All Department"}
-              <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
-            </Button>
-          </PopoverTrigger>
-
-          <PopoverContent className="p-0 w-[320px]" align="start">
-            <Command>
-              <CommandInput placeholder="Search..." />
-              <CommandList>
-                <CommandEmpty>No department found.</CommandEmpty>
-                <CommandGroup>
-                  {departments.map((department) => (
-                    <CommandItem
-                      key={department.id}
-                      value={department.name}
-                      onSelect={() => {
-                        onDepartmentChange(department.id);
-                        setDepartmentPopoverOpen(false);
-                      }}
-                      className="relative pr-9"
-                    >
-                      {department.name}
-
-                      <Check
-                        className={cn(
-                          "absolute right-3 size-4",
-                          departmentId === department.id
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <Popover
-          open={positionPopoverOpen}
-          onOpenChange={setPositionPopoverOpen}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1 min-w-0 justify-between"
-            >
-              {selectedPosition?.name || "All Position"}
-              <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
-            </Button>
-          </PopoverTrigger>
-
-          <PopoverContent className="p-0 w-[320px]" align="start">
-            <Command>
-              <CommandInput placeholder="Search..." />
-              <CommandList>
-                <CommandEmpty>No position found.</CommandEmpty>
-                <CommandGroup>
-                  {positions.map((position) => (
-                    <CommandItem
-                      key={position.id}
-                      value={position.name}
-                      onSelect={() => {
-                        onPositionChange(position.id);
-                        setPositionPopoverOpen(false);
-                      }}
-                      className="relative pr-9"
-                    >
-                      {position.name}
-
-                      <Check
-                        className={cn(
-                          "absolute right-3 size-4",
-                          positionId === position.id
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <SearchableSelect
+          options={departments}
+          value={departmentId}
+          onChange={onDepartmentChange}
+          placeholder="All Department"
+          searchPlaceholder="Search department..."
+          emptyMessage="No department found."
+        />
+        <SearchableSelect
+          options={positions}
+          value={positionId}
+          onChange={onPositionChange}
+          placeholder="All Position"
+          searchPlaceholder="Search position..."
+          emptyMessage="No position found."
+        />
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="outline" size="icon" onClick={onReset}>
