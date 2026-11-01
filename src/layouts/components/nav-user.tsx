@@ -82,7 +82,7 @@ export function NavUser() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <SparklesIcon />
                 Upgrade to Pro
@@ -102,8 +102,8 @@ export function NavUser() {
                 <BellIcon />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            </DropdownMenuGroup> */}
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem
               className="text-destructive hover:text-destructive"
               onClick={logout}

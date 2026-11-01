@@ -36,6 +36,7 @@ import { useState } from "react";
 import { EditDialog } from "./blocks/edit-dialog";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { format } from "date-fns";
 
 const getStatusVariant = (status: string) => {
   switch (status) {
@@ -314,7 +315,11 @@ export function Page() {
                 <PiCalendarBold />
                 <span className="text-sm">Join Date</span>
               </div>
-              <p className="text-sm">{employee?.phone ?? "-"}</p>
+              <p className="text-sm">
+                {employee?.start_date
+                  ? format(employee?.start_date, "dd MMMM yyyy")
+                  : "-"}
+              </p>
             </div>
 
             <div className="flex flex-col gap-1">
@@ -346,7 +351,9 @@ export function Page() {
                 <PiFileTextBold />
                 <span className="text-sm">Employment Type</span>
               </div>
-              <p className="text-sm">{employee?.contract_type ?? "-"}</p>
+              <p className="text-sm capitalize">
+                {employee?.contract_type ?? "-"}
+              </p>
             </div>
           </div>
         </TabsContent>
