@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import type { CalendarEvent } from "./components/schedule-types";
 import { ContentLoader } from "@/components/common/content-loader";
+import { ScheduleLegend } from "./components/schedule-legend";
 
 const baseUrl = apiConfig.API_URL;
 
@@ -48,6 +49,8 @@ export function Page() {
           Here’s what’s happening with your workspace today.
         </p>
       </div>
+
+      <ScheduleLegend />
 
       <ScheduleCalendar schedules={schedules} />
     </div>

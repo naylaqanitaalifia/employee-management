@@ -84,7 +84,13 @@ export function ScheduleCalendar({ schedules }: ScheduleCalendarProps) {
           events={schedules}
         />
       )}
-      {view === "week" && <ScheduleWeekView currentDate={currentDate} />}
+      {view === "week" && (
+        <ScheduleWeekView
+          currentDate={currentDate}
+          onEventClick={handleDetailDialog}
+          events={schedules}
+        />
+      )}
 
       <AddDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
