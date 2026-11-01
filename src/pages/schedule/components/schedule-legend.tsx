@@ -13,7 +13,6 @@ const SCHEDULE_TYPES = [
 export function ScheduleLegend() {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-      {/* Header */}
       <div className="mb-3">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
           Schedule Categories
@@ -24,7 +23,6 @@ export function ScheduleLegend() {
         </p>
       </div>
 
-      {/* Color Legend */}
       <div className="flex flex-wrap gap-2">
         {SCHEDULE_TYPES.map(({ type, label }) => (
           <div
